@@ -58,6 +58,20 @@ export default function Projetos() {
         "Persistência em banco de dados relacional.",
         "Estruturação baseada no padrão MVC."
       ]
+    },
+    {
+      id: "05",
+      titulo: "Sistema RAG com OpenAI",
+      subtitulo: "Inteligência Artificial & Backend",
+      imagem: "/Captura de Tela 2026-03-01 às 22.59.31.png",
+      descricao: "Implementação do padrão RAG (Retrieval-Augmented Generation) integrando a API da OpenAI para buscar informações em bases de dados e gerar respostas contextualizadas.",
+      tecnologias: ["Java", "Spring Boot", "OpenAI API", "RAG"],
+      linkGithub: "https://github.com/lzAmaral/Estudos_RAG_OpenAI",
+      detalhes: [
+        "Integração direta com a API da OpenAI.",
+        "Arquitetura de Retrieval-Augmented Generation (RAG).",
+        "Processamento e injeção de contexto inteligente na IA."
+      ]
     }
   ];
 
