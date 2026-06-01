@@ -3,6 +3,5 @@ node_modules/
 out/
 build/
 .DS_Store
-*.lognode_modules/
-.next/
-.DS_Store
+*.log
+.agents/

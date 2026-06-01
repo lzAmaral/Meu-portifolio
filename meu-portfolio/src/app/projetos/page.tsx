@@ -159,7 +159,7 @@ export default function Projetos() {
       </section>
 
       <footer className="max-w-6xl mx-auto mt-40 py-10 border-t border-gray-800 text-center text-gray-500 text-sm italic">
-        © 2026 Luiz Amaral • Desenvolvedor Full Stack
+        © 2026 Luiz Amaral • Desenvolvedor Backend Java
       </footer>
     </main>
   );

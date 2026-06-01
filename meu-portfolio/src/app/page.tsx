@@ -1,5 +1,6 @@
 import { Download, Github, Linkedin } from "lucide-react";
-import Link from "next/link"; // Importante para navegação interna
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -29,7 +30,7 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 items-center w-full sm:w-auto justify-center md:justify-start">
-            <a href="/Luiz Amaral - CV.pdf" download className="flex items-center justify-center gap-2 border border-blue-500 text-blue-500 px-6 py-3 rounded-full hover:bg-blue-500 hover:text-white transition cursor-pointer font-medium w-full sm:w-auto">
+            <a href="/luiz-amaral-cv.pdf" download className="flex items-center justify-center gap-2 border border-blue-500 text-blue-500 px-6 py-3 rounded-full hover:bg-blue-500 hover:text-white transition cursor-pointer font-medium w-full sm:w-auto">
               DOWNLOAD CV <Download size={20} />
             </a>
             <div className="flex gap-5 items-center justify-center">
@@ -41,7 +42,7 @@ export default function Home() {
 
         <div className="flex-1 flex justify-center order-first md:order-last mb-8 md:mb-0">
           <div className="relative w-56 h-56 md:w-80 md:h-80 border-4 border-blue-500 rounded-full overflow-hidden shadow-lg shadow-blue-500/20">
-            <img src="/LuizFtPerfil.jpeg" alt="Luiz Amaral" className="w-full h-full object-cover" />
+            <Image src="/LuizFtPerfil.jpeg" alt="Luiz Amaral — Desenvolvedor Backend Java" fill className="object-cover" priority />
           </div>
         </div>
       </section>
