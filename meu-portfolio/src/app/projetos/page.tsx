@@ -1,165 +1,176 @@
-import { ChevronLeft, Github, Code2, Smartphone, Video } from "lucide-react";
+import { ChevronLeft, Github, Terminal, Database, Server, Cpu } from "lucide-react";
 import Link from "next/link";
 
 export default function Projetos() {
   const projetos = [
     {
       id: "01",
-      titulo: "Coimbra Editor - Landing Page",
-      subtitulo: "Portfólio para Editor de Vídeo",
-      imagem: "/lpcoimbra.png", // Lembre de adicionar a imagem na pasta public
-      descricao: "Landing page de alta conversão desenvolvida para um serviço de edição de vídeo. Focada em design moderno, performance e apresentação de portfólio audiovisual.",
-      tecnologias: ["React", "Tailwind CSS", "Lucide React"],
-      linkGithub: "https://github.com/lzAmaral/LP-CoimbraEditor",
+      titulo: "E-commerce Ana Modas",
+      subtitulo: "Plataforma de Gestão de Vendas",
+      icone: <Database className="w-6 h-6 text-emerald-500" />,
+      descricao: "Solução completa de e-commerce construída para automatizar processos físicos. A arquitetura foi desenhada em camadas rigorosas (Controller, Service, Repository), focando em integridade transacional e escalabilidade.",
+      tecnologias: ["Java 17", "Spring Boot", "MySQL", "Telegram API", "REST"],
+      linkGithub: "https://github.com/lzAmaral/UniLoja",
       detalhes: [
-        "Design responsivo otimizado para dispositivos móveis.",
-        "Interface limpa e focada na experiência do usuário (UX).",
-        "Seções estratégicas para exibição de serviços e contato."
+        "Dashboard analítico de indicadores.",
+        "Módulo de estoque real-time.",
+        "Notificações automatizadas via Telegram Bot.",
+        "Modelagem Relacional (MER) avançada."
       ]
     },
     {
       id: "02",
-      titulo: "UniLoja - E-commerce API",
-      subtitulo: "Sistema de Gestão de Vendas",
-      imagem: "/uniloja.jpg.png",
-      descricao: "API robusta em Java para gerenciamento de e-commerce, com foco em modelagem de dados complexa e segurança nas transações de pedidos.",
-      tecnologias: ["Java", "Spring Boot", "JPA / Hibernate", "H2 Database"],
-      linkGithub: "https://github.com/lzAmaral/UniLoja",
+      titulo: "Pipeline RAG com IA",
+      subtitulo: "Motor de Busca Semântica (Em dev)",
+      icone: <Cpu className="w-6 h-6 text-emerald-500" />,
+      descricao: "Pipeline backend para indexação vetorial e recuperação de contexto. Integra a API da OpenAI com banco PostgreSQL para criar uma base de conhecimento inteligente capaz de responder perguntas sobre PDFs.",
+      tecnologias: ["Java", "Spring Boot", "pgvector", "OpenAI API", "PostgreSQL"],
+      linkGithub: "https://github.com/lzAmaral/Estudos_RAG_OpenAI",
       detalhes: [
-        "Modelagem de Entidade e Relacionamento (MER) avançada.",
-        "Persistência de dados com foco em integridade.",
-        "Arquitetura escalável seguindo padrões de mercado."
+        "Geração e persistência de Embeddings.",
+        "Busca vetorial de vizinhos mais próximos.",
+        "Context Injection no modelo GPT (RAG).",
+        "Suporte a Chatbots documentais."
       ]
     },
     {
       id: "03",
-      titulo: "Encurtador de URL",
-      subtitulo: "Utilitário Backend",
-      imagem: "/encurtador.jpg",
-      descricao: "Serviço focado em performance para encurtamento de links, utilizando algoritmos de hashing para redirecionamento instantâneo.",
-      tecnologias: ["Java", "Spring Boot", "Maven"],
-      linkGithub: "https://github.com/lzAmaral/Encurtador-de-URL",
+      titulo: "Gestão de Consultas",
+      subtitulo: "API REST de Agendamento",
+      icone: <Server className="w-6 h-6 text-emerald-500" />,
+      descricao: "API projetada para o setor de saúde. Gerencia horários e serviços evitando conflitos de concorrência. Utiliza Flyway para migrações e dispara e-mails transacionais com templates HTML.",
+      tecnologias: ["Java 17", "Spring Data JPA", "PostgreSQL", "Flyway", "JavaMailSender"],
+      linkGithub: "https://github.com/lzAmaral/SISTEMA-DE-AGENDAMENTO",
       detalhes: [
-        "Lógica de geração de identificadores únicos.",
-        "Redirecionamento HTTP eficiente (302).",
-        "Desenvolvimento orientado a performance."
+        "Regras complexas de sobreposição de horário.",
+        "Notificações automáticas por e-mail.",
+        "Versionamento de banco de dados estruturado."
       ]
     },
     {
       id: "04",
-      titulo: "Sistema de Agendamento",
-      subtitulo: "Gestão de Fluxo",
-      imagem: "/agendamento.jpg",
-      descricao: "Sistema de agendamento em Java projetado para gerenciar horários e serviços, evitando conflitos e automatizando o atendimento.",
-      tecnologias: ["Java", "Spring Boot", "MySQL"],
-      linkGithub: "https://github.com/lzAmaral/SISTEMA-DE-AGENDAMENTO",
+      titulo: "URL Shortener",
+      subtitulo: "Utilitário de Alta Performance",
+      icone: <Terminal className="w-6 h-6 text-emerald-500" />,
+      descricao: "Microsserviço ultrarrápido para encurtamento de links. Implementa algoritmos de hashing e redirecionamentos HTTP 302 com o menor overhead possível.",
+      tecnologias: ["Java", "Spring Boot", "Hashing", "HTTP 302"],
+      linkGithub: "https://github.com/lzAmaral/Encurtador-de-URL",
       detalhes: [
-        "Tratamento de regras de negócio complexas.",
-        "Persistência em banco de dados relacional.",
-        "Estruturação baseada no padrão MVC."
+        "Lógica de identificadores únicos curtos.",
+        "Foco em latência mínima no redirecionamento.",
+        "Arquitetura clean e objetiva."
       ]
     },
     {
       id: "05",
-      titulo: "Sistema RAG com OpenAI",
-      subtitulo: "Inteligência Artificial & Backend",
-      imagem: "/Captura de Tela 2026-03-01 às 22.59.31.png",
-      descricao: "Implementação do padrão RAG (Retrieval-Augmented Generation) integrando a API da OpenAI para buscar informações em bases de dados e gerar respostas contextualizadas.",
-      tecnologias: ["Java", "Spring Boot", "OpenAI API", "RAG"],
-      linkGithub: "https://github.com/lzAmaral/Estudos_RAG_OpenAI",
+      titulo: "Coimbra Editor",
+      subtitulo: "Portfólio / Landing Page",
+      icone: <Terminal className="w-6 h-6 text-emerald-500" />,
+      descricao: "Projeto front-end focado em conversão. Desenvolvido para apresentar portfólio audiovisual com altíssima performance e responsividade em dispositivos móveis.",
+      tecnologias: ["React", "Tailwind CSS", "Lucide", "Vite"],
+      linkGithub: "https://github.com/lzAmaral/LP-CoimbraEditor",
       detalhes: [
-        "Integração direta com a API da OpenAI.",
-        "Arquitetura de Retrieval-Augmented Generation (RAG).",
-        "Processamento e injeção de contexto inteligente na IA."
+        "Design focado na experiência do usuário (UX).",
+        "Performance otimizada de imagens e vídeos.",
+        "Interface sem dependência de bibliotecas CSS pesadas."
       ]
     }
   ];
 
   return (
-    <main className="min-h-screen bg-[#1a1a1a] text-white p-8">
-      <nav className="max-w-6xl mx-auto mb-16">
-        <Link href="/" className="flex items-center gap-2 text-blue-500 hover:text-blue-400 transition font-medium">
-          <ChevronLeft size={20} /> Voltar para Home
+    <main className="min-h-screen bg-[#050505] text-white p-8 selection:bg-emerald-500/30">
+      <nav className="max-w-7xl mx-auto mb-20 pt-8">
+        <Link href="/" className="inline-flex items-center gap-2 text-emerald-500 hover:text-emerald-400 transition font-mono uppercase text-sm tracking-widest">
+          <ChevronLeft size={16} /> [ Voltar_Home ]
         </Link>
       </nav>
 
-      <section className="max-w-6xl mx-auto pb-20">
-        <header className="mb-24">
-          <span className="text-blue-500 font-mono tracking-widest uppercase text-sm">Portfólio</span>
-          <h2 className="text-5xl font-bold mt-4">Meus <span className="text-blue-500">Projetos</span></h2>
-          <p className="text-gray-400 mt-4 max-w-2xl text-lg">
-            Abaixo estão alguns dos projetos que desenvolvi nos últimos 2 anos de estudo, unindo o poder do Java Backend com interfaces modernas.
+      <section className="max-w-7xl mx-auto pb-32">
+        <header className="mb-32">
+          <span className="text-emerald-500/50 font-mono tracking-widest uppercase text-xs">/sys/portfolio/projects</span>
+          <h2 className="text-6xl md:text-8xl font-black mt-6 tracking-tighter uppercase">
+            Engenharia <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-700">Aplicada.</span>
+          </h2>
+          <p className="text-gray-400 mt-8 max-w-2xl text-xl font-light leading-relaxed">
+            Arquitetura de software, integrações complexas e APIs robustas. 
+            Estes são os sistemas construídos com foco em <strong className="text-white font-normal">performance e escalabilidade</strong>.
           </p>
         </header>
 
-        <div className="space-y-40">
+        <div className="flex flex-col border-t border-gray-900">
           {projetos.map((proj) => (
-            <div key={proj.id} className="grid lg:grid-cols-2 gap-16 items-center">
-              
-              <div className="space-y-8 order-2 lg:order-1">
-                <div className="space-y-4">
-                  <span className="text-7xl font-bold text-gray-800/40 select-none leading-none">{proj.id}</span>
-                  <h3 className="text-4xl font-bold leading-tight">{proj.titulo}</h3>
-                  <p className="text-blue-400 font-mono text-sm uppercase tracking-wider">{proj.subtitulo}</p>
+            <article key={proj.id} className="relative group border-b border-gray-900 py-24 overflow-hidden">
+              {/* Background giant number */}
+              <div className="absolute top-1/2 -translate-y-1/2 left-0 text-[20rem] font-black text-white/[0.02] select-none pointer-events-none group-hover:text-emerald-500/[0.03] transition-colors duration-700 font-mono">
+                {proj.id}
+              </div>
+
+              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16">
+                
+                {/* Meta column */}
+                <div className="lg:col-span-3 flex flex-col gap-4">
+                  <div className="flex items-center gap-4">
+                    <span className="text-2xl font-black text-gray-500">{proj.id}</span>
+                    <div className="h-[1px] flex-1 bg-gray-800" />
+                    {proj.icone}
+                  </div>
+                  <h3 className="text-emerald-500 font-mono text-sm uppercase tracking-widest leading-relaxed">
+                    {proj.subtitulo}
+                  </h3>
                 </div>
 
-                <p className="text-gray-400 text-lg leading-relaxed">{proj.descricao}</p>
-
-                <div className="space-y-6">
-                  <h4 className="text-white font-semibold flex items-center gap-2">
-                    <Code2 size={20} className="text-blue-500" /> Destaques Técnicos
+                {/* Content column */}
+                <div className="lg:col-span-9 space-y-8">
+                  <h4 className="text-4xl md:text-5xl font-bold uppercase tracking-tight text-gray-100 group-hover:text-white transition-colors">
+                    {proj.titulo}
                   </h4>
-                  <ul className="space-y-3">
-                    {proj.detalhes.map((item, i) => (
-                      <li key={i} className="flex items-center gap-3 text-gray-400 text-sm italic">
-                        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="flex gap-4 pt-4">
-                  <a 
-                    href={proj.linkGithub} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 bg-blue-600 px-8 py-3 rounded-full hover:bg-blue-700 transition-all font-bold text-white shadow-lg shadow-blue-500/20"
-                  >
-                    <Github size={18} /> GITHUB REPO
-                  </a>
-                </div>
-              </div>
-
-              <div className="order-1 lg:order-2 flex justify-center items-center">
-                <div className="relative group max-w-[300px] w-full">
-                  <div className="relative z-10 rounded-[2.5rem] border-[8px] border-gray-800 bg-gray-900 overflow-hidden shadow-2xl transition-transform duration-500 group-hover:scale-105 group-hover:border-blue-500/50">
-                    <img 
-                      src={proj.imagem} 
-                      alt={proj.titulo}
-                      className="w-full h-auto object-cover"
-                    />
-                  </div>
-                  <div className="absolute -inset-4 bg-blue-500/20 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
-                  <div className="absolute -bottom-4 -right-4 z-20 bg-[#1e1e1e] border border-gray-800 p-4 rounded-2xl shadow-xl hidden md:block">
-                    <div className="flex items-center gap-3">
-                      {proj.id === "01" ? <Video size={20} className="text-blue-500" /> : <Smartphone size={20} className="text-blue-500" />}
-                      <span className="text-xs font-bold text-gray-300 uppercase">
-                        {proj.id === "01" ? "Video Portfolio" : "System Preview"}
+                  <div className="flex flex-wrap gap-2">
+                    {proj.tecnologias.map((tech, i) => (
+                      <span key={i} className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 text-xs font-mono uppercase tracking-wider">
+                        {tech}
                       </span>
-                    </div>
+                    ))}
+                  </div>
+
+                  <p className="text-gray-400 text-lg leading-relaxed max-w-3xl">
+                    {proj.descricao}
+                  </p>
+
+                  <div className="grid md:grid-cols-2 gap-4 pt-4 max-w-3xl">
+                    {proj.detalhes.map((item, i) => (
+                      <div key={i} className="flex items-start gap-3 text-gray-400 text-sm">
+                        <span className="text-emerald-500 font-mono mt-0.5">{">"}</span>
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="pt-8">
+                    <a 
+                      href={proj.linkGithub} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-3 text-white font-mono text-sm uppercase tracking-widest hover:text-emerald-400 transition-colors group/link"
+                    >
+                      <Github size={18} className="text-emerald-500 group-hover/link:-translate-y-1 transition-transform" /> 
+                      <span className="border-b border-gray-700 group-hover/link:border-emerald-400 transition-colors pb-1">
+                        Analisar Código-Fonte
+                      </span>
+                    </a>
                   </div>
                 </div>
-              </div>
 
-            </div>
+              </div>
+            </article>
           ))}
         </div>
       </section>
 
-      <footer className="max-w-6xl mx-auto mt-40 py-10 border-t border-gray-800 text-center text-gray-500 text-sm italic">
-        © 2026 Luiz Amaral • Desenvolvedor Backend Java
+      <footer className="max-w-7xl mx-auto mt-20 py-10 text-center md:text-left text-gray-600 font-mono text-xs uppercase tracking-widest flex flex-col md:flex-row justify-between items-center gap-4">
+        <span>© 2026 Luiz Amaral</span>
+        <span>SYSTEM.STATUS: ONLINE</span>
       </footer>
     </main>
   );
