@@ -1,189 +1,518 @@
-import { Download, Github, Linkedin, Terminal } from "lucide-react";
+"use client";
+
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
+import { 
+  Terminal, Database, Cpu, Github, 
+  Download, ExternalLink, Zap
+} from "lucide-react";
+
+
+const CursorOrb = () => {
+  const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  useEffect(() => {
+    const updateMousePosition = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName.toLowerCase() === 'a' || 
+        target.tagName.toLowerCase() === 'button' ||
+        target.closest('a') || 
+        target.closest('button')
+      ) {
+        setIsHovering(true);
+      } else {
+        setIsHovering(false);
+      }
+    };
+
+    window.addEventListener("mousemove", updateMousePosition);
+    window.addEventListener("mouseover", handleMouseOver);
+    
+    return () => {
+      window.removeEventListener("mousemove", updateMousePosition);
+      window.removeEventListener("mouseover", handleMouseOver);
+    };
+  }, []);
+
+  return (
+    <div 
+      className={`cursor-orb hidden md:block ${isHovering ? 'scale-[2.5] bg-[#00b4d8]/40 border-transparent' : ''}`}
+      style={{ 
+        left: `${mousePosition.x}px`, 
+        top: `${mousePosition.y}px` 
+      }}
+    />
+  );
+};
 
 export default function Home() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const wordAnimation = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.1, duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] }
+    })
+  };
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  const projetos = [
+    {
+      id: "01",
+      titulo: "E-commerce Ana Modas",
+      subtitulo: "Plataforma de Gestão de Vendas",
+      icone: <Database className="w-5 h-5 text-[#00b4d8]" />,
+      descricao: "Solução completa de e-commerce construída para automatizar processos físicos. A arquitetura foi desenhada em camadas rigorosas (Controller, Service, Repository), focando em integridade transacional e escalabilidade.",
+      tecnologias: ["Java 17", "Spring Boot", "MySQL", "Telegram API", "REST"],
+      linkGithub: "https://github.com/lzAmaral/UniLoja",
+      img: "/image.png",
+      url: "anamodas.com.br"
+    },
+    {
+      id: "02",
+      titulo: "Pipeline RAG com IA",
+      subtitulo: "Motor de Busca Semântica (Em dev)",
+      icone: <Cpu className="w-5 h-5 text-[#00b4d8]" />,
+      descricao: "Pipeline backend para indexação vetorial e recuperação de contexto. Integra a API da OpenAI com banco PostgreSQL para criar uma base de conhecimento inteligente.",
+      tecnologias: ["Java", "Spring Boot", "pgvector", "OpenAI API", "PostgreSQL"],
+      linkGithub: "https://github.com/lzAmaral/Estudos_RAG_OpenAI"
+    },
+    {
+      id: "03",
+      titulo: "Solux Energy",
+      subtitulo: "Plataforma de Rateio de Energia",
+      icone: <Zap className="w-5 h-5 text-[#00b4d8]" />,
+      descricao: "Uma plataforma para automatizar o rateio de créditos de energia solar em Geração Distribuída, resolvendo regras de negócio complexas de rateio que costumam ser feitas manualmente em planilhas.",
+      tecnologias: ["Java", "Spring Boot", "React", "Tailwind CSS", "PostgreSQL", "Flyway"],
+      linkGithub: "https://github.com/lzAmaral/Solux-UPX",
+      img: "/solux.jpg",
+      url: "soluxenergy.com.br"
+    }
+  ];
+
   return (
-    <main className="min-h-screen bg-[#050505] text-white p-4 md:p-8 selection:bg-blue-500/30">
-      <nav className="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto mb-16 md:mb-32 pt-4 gap-8 md:gap-0">
-        <div className="flex items-center gap-3">
-          <Terminal size={24} className="text-blue-500" />
-          <h1 className="text-xl font-mono font-bold tracking-widest text-blue-500 uppercase">
-            Luiz_Amaral.dev
-          </h1>
+    <>
+      <CursorOrb />
+      
+      {/* Navbar */}
+      <motion.nav 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-4 bg-[#050505]/80 backdrop-blur-md border-b border-white/5' : 'py-8'}`}
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
+          <a href="#" className="font-bold text-xl tracking-tighter hover:text-[#00b4d8] transition-colors">
+            luiz<span className="text-[#00b4d8]">.</span>amaral
+          </a>
+          <ul className="hidden md:flex gap-8 mono text-sm uppercase tracking-widest text-white/60">
+            <li><a href="#experiencia" className="hover:text-white transition-colors">experiência</a></li>
+            <li><a href="#projetos" className="hover:text-white transition-colors">projetos</a></li>
+            <li><a href="#skills" className="hover:text-white transition-colors">skills</a></li>
+            <li><a href="#contato" className="hover:text-white transition-colors">contato</a></li>
+          </ul>
         </div>
+      </motion.nav>
 
-        <div className="flex items-center gap-6 md:gap-10 text-sm md:text-base font-mono uppercase tracking-widest">
-          <Link href="/" className="text-white border-b-2 border-blue-500 pb-1">
-            Home
-          </Link>
-          <Link href="/projetos" className="text-gray-400 hover:text-blue-400 hover:border-b-2 hover:border-blue-500/50 pb-1 transition-all">
-            Projetos
-          </Link>
-          <Link
-            href="/contato"
-            className="bg-blue-500 text-[#050505] px-6 py-2 font-bold hover:bg-blue-400 transition-colors"
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center pt-32 pb-20 px-6 md:px-12 overflow-hidden">
+        <div className="hero-aurora">
+          <div className="aurora-orb aurora-orb-1" />
+          <div className="aurora-orb aurora-orb-2" />
+          <div className="aurora-orb aurora-orb-3" />
+        </div>
+        
+        <div className="max-w-7xl mx-auto w-full z-10">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mono text-[#00b4d8] mb-8"
           >
-            Contato
-          </Link>
+            {"// luiz amaral"}
+          </motion.p>
+          
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.95] max-w-5xl">
+            {["Construindo", "APIs", "robustas,"].map((word, i) => (
+              <motion.span key={i} custom={i} variants={wordAnimation} initial="hidden" animate="visible" className="inline-block mr-[0.2em]">
+                {word}
+              </motion.span>
+            ))}
+            <br className="hidden md:block" />
+            {["escaláveis"].map((word, i) => (
+              <motion.span key={i+3} custom={i+3} variants={wordAnimation} initial="hidden" animate="visible" className="inline-block mr-[0.2em] text-[#00b4d8]">
+                {word}
+              </motion.span>
+            ))}
+            {["e", "de"].map((word, i) => (
+              <motion.span key={i+4} custom={i+4} variants={wordAnimation} initial="hidden" animate="visible" className="inline-block mr-[0.2em]">
+                {word}
+              </motion.span>
+            ))}
+            {["alta", "performance."].map((word, i) => (
+              <motion.span key={i+6} custom={i+6} variants={wordAnimation} initial="hidden" animate="visible" className="inline-block mr-[0.2em] text-[#00b4d8]">
+                {word}
+              </motion.span>
+            ))}
+          </h1>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
+            className="mt-12 text-white/60 text-lg md:text-xl max-w-2xl font-light leading-relaxed"
+          >
+            Engenheiro de Software Backend especializado em Java, Spring Boot e ecossistemas escaláveis. Foco em integridade transacional, modelagem relacional e automação inteligente.
+          </motion.p>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.4, duration: 0.8 }}
+            className="mt-12 flex flex-wrap gap-6"
+          >
+            <a href="#projetos" className="btn-fill">Ver projetos ↓</a>
+            <a href="/Luiz_Gustavo_Amaral_CV.pdf" download className="btn-ghost gap-2">Baixar_CV <Download size={18} /></a>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.8, duration: 1 }}
+            className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 border-t border-white/10 pt-12"
+          >
+            <div>
+              <h3 className="text-4xl md:text-5xl font-black mb-2">2<span className="text-[#00b4d8]">+</span></h3>
+              <p className="mono text-sm text-white/40 uppercase tracking-widest">Anos de estudo</p>
+            </div>
+            <div>
+              <h3 className="text-4xl md:text-5xl font-black mb-2">10<span className="text-[#00b4d8]">+</span></h3>
+              <p className="mono text-sm text-white/40 uppercase tracking-widest">Sistemas Entregues</p>
+            </div>
+            <div>
+              <h3 className="text-4xl md:text-5xl font-black mb-2">10<span className="text-[#00b4d8]">+</span></h3>
+              <p className="mono text-sm text-white/40 uppercase tracking-widest">Tecnologias</p>
+            </div>
+            <div>
+              <h3 className="text-4xl md:text-5xl font-black mb-2 flex items-center"><Terminal className="text-[#00b4d8] w-10 h-10" /></h3>
+              <p className="mono text-sm text-white/40 uppercase tracking-widest">Arquitetura Limpa</p>
+            </div>
+          </motion.div>
         </div>
-      </nav>
+      </section>
 
-      <section className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-24 text-center lg:text-left mb-32">
-        <div className="flex-1 space-y-8 flex flex-col items-center lg:items-start z-10">
-          <div className="inline-flex items-center gap-3 border border-blue-500/20 bg-blue-500/5 px-4 py-2">
-            <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-            <span className="text-blue-400 font-mono text-xs md:text-sm uppercase tracking-widest">Backend Java Engineer</span>
-          </div>
+      {/* Experience Section */}
+      <section id="experiencia" className="py-32 px-6 md:px-12 relative">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUp}
+            className="mb-16"
+          >
+            <p className="mono text-[#00b4d8] mb-4">{"// trajetória"}</p>
+            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">Experiência & Formação</h2>
+          </motion.div>
 
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9]">
-            Engenharia <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-700">Robusta.</span>
-          </h2>
-
-          <p className="text-gray-400 text-lg md:text-xl max-w-xl font-light leading-relaxed">
-            Desenvolvedor Backend com expertise em ecossistemas <strong className="text-white font-normal">Java & Spring Boot</strong>. Especializado em criar APIs de alta performance, integrações com IA e modelagem relacional.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-6 items-center w-full sm:w-auto pt-4">
-            {/* CORREÇÃO AQUI: Link do PDF atualizado para o novo arquivo */}
-            <a
-              href="/Luiz_Gustavo_Amaral_CV.pdf"
-              download
-              className="group flex items-center justify-center gap-3 border border-blue-500 bg-transparent text-blue-500 px-8 py-4 font-mono font-bold uppercase tracking-widest hover:bg-blue-500 hover:text-[#050505] transition-all w-full sm:w-auto"
+          <div className="grid md:grid-cols-2 gap-8">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              className="exp-card-glass p-8 md:p-10"
             >
-              Baixar_CV <Download size={18} className="group-hover:animate-bounce" />
-            </a>
-
-            <div className="flex gap-6 items-center justify-center">
-              <a href="https://github.com/lzAmaral" target="_blank" className="text-gray-500 hover:text-blue-500 transition-colors">
-                <Github size={28} />
-              </a>
-              <a href="https://www.linkedin.com/in/luiz-gustavo-de-campos-amaral-122622278/" target="_blank" className="text-gray-500 hover:text-blue-500 transition-colors">
-                <Linkedin size={28} />
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex-1 flex justify-center lg:justify-end order-first lg:order-last w-full max-w-md lg:max-w-none">
-          {/* Fuga do Clichê: Foto brutalista com glitch/border effect ao invés de circulo perfeito */}
-          <div className="relative group">
-            <div className="absolute inset-0 bg-blue-500 translate-x-4 translate-y-4 opacity-20 group-hover:translate-x-6 group-hover:translate-y-6 transition-transform duration-500" />
-            <div className="relative w-72 h-72 md:w-[26rem] md:h-[26rem] border border-gray-800 bg-[#0A0A0A] overflow-hidden z-10">
-              <Image
-                src="/LuizFtPerfil.jpeg"
-                alt="Luiz Amaral"
-                fill
-                className="object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-                priority
-              />
-              <div className="absolute inset-0 border border-blue-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </div>
-
-            {/* Elementos decorativos Matrix/Code */}
-            <div className="absolute -left-8 top-12 text-blue-500/20 font-mono text-xs rotate-90 tracking-widest hidden md:block">
-              {">"} SISTEMA.INICIAR()
-            </div>
-            <div className="absolute -right-8 bottom-12 text-blue-500/20 font-mono text-xs -rotate-90 tracking-widest hidden md:block">
-              V 2.0.26
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto border-t border-gray-900 pt-16 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-left">
-
-          <div className="space-y-4 p-6 border border-gray-900 bg-[#0A0A0A] hover:border-blue-500/30 transition-colors">
-            <h3 className="text-blue-500 font-mono text-xs uppercase tracking-widest flex items-center gap-2">
-              <span className="text-gray-600">//</span> TEMPO_ATIVIDADE
-            </h3>
-            <div className="text-5xl font-black text-white">2<span className="text-blue-500">+</span></div>
-            <p className="text-gray-500 font-mono text-sm">Anos de estudo</p>
-          </div>
-
-          <div className="space-y-4 p-6 border border-gray-900 bg-[#0A0A0A] hover:border-blue-500/30 transition-colors">
-            <h3 className="text-blue-500 font-mono text-xs uppercase tracking-widest flex items-center gap-2">
-              <span className="text-gray-600">//</span> PROJETOS_ENTREGUES
-            </h3>
-            <div className="text-5xl font-black text-white">10<span className="text-blue-500">+</span></div>
-            <p className="text-gray-500 font-mono text-sm">Sistemas Entregues</p>
-          </div>
-
-          <div className="space-y-4 p-6 border border-gray-900 bg-[#0A0A0A] hover:border-blue-500/30 transition-colors">
-            <h3 className="text-blue-500 font-mono text-xs uppercase tracking-widest flex items-center gap-2">
-              <span className="text-gray-600">//</span> TECNOLOGIAS_ATIVAS
-            </h3>
-            <div className="text-5xl font-black text-white">10<span className="text-blue-500">+</span></div>
-            <p className="text-gray-500 font-mono text-sm">Tecnologias Dominadas</p>
-          </div>
-
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto border-t border-gray-900 pt-24 pb-24">
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter flex items-center gap-4">
-            <span className="text-blue-500 font-mono text-xl md:text-3xl">{"//"}</span>
-            Log_Carreira
-          </h2>
-          <p className="text-gray-400 mt-4 font-mono text-sm uppercase tracking-widest">
-            Histórico Profissional & Acadêmico
-          </p>
-        </div>
-
-        <div className="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-800 before:to-transparent">
-
-          {/* Item 1: Experiência SESI */}
-          <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-[#050505] bg-blue-500 text-[#050505] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_0_4px_#050505] z-10">
-              <Terminal size={16} className="animate-pulse" />
-            </div>
-
-            <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] p-6 border border-blue-500/30 bg-[#0A0A0A] hover:bg-[#0c0c0c] transition-colors relative">
-              <div className="flex flex-col xl:flex-row xl:items-center justify-between mb-2 gap-2">
-                <h3 className="font-bold text-xl text-white uppercase tracking-wider">Estagiário de Tecnologia</h3>
-                <span className="text-blue-500 font-mono text-xs border border-blue-500/20 bg-blue-500/10 px-2 py-1 shrink-0">2026 - Atual</span>
+              <div className="flex justify-between items-start mb-8 border-b border-white/10 pb-6">
+                <div>
+                  <span className="mono text-5xl font-black text-white/10">01</span>
+                </div>
+                <span className="mono text-xs text-[#00b4d8] bg-[#00b4d8]/10 px-3 py-1 border border-[#00b4d8]/20">2026 — ATUAL</span>
               </div>
-              <h4 className="text-gray-400 font-mono text-sm mb-4">SESI (Espaço Maker)</h4>
-              <ul className="space-y-2 text-gray-500 text-sm">
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-500 mt-1">{">"}</span>
+              <h3 className="text-2xl font-bold uppercase tracking-wide mb-2">Estagiário de Tecnologia</h3>
+              <h4 className="text-xl text-white/60 mb-6 font-light">SESI (Espaço Maker)</h4>
+              <ul className="space-y-4 text-white/70">
+                <li className="flex items-start gap-3">
+                  <span className="text-[#00b4d8] mt-1">▹</span>
                   Integração entre tecnologia e educação através de atividades práticas e inovadoras.
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-500 mt-1">{">"}</span>
-                  Ensino de lógica de programação e ferramentas tecnológicas, desenvolvendo raciocínio analítico.
+                <li className="flex items-start gap-3">
+                  <span className="text-[#00b4d8] mt-1">▹</span>
+                  Ensino de lógica de programação e ferramentas tecnológicas.
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-500 mt-1">{">"}</span>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#00b4d8] mt-1">▹</span>
                   Suporte técnico e operacional do ambiente.
                 </li>
               </ul>
-            </div>
-          </div>
+            </motion.div>
 
-          {/* Item 2: FACENS */}
-          <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-[#050505] bg-gray-800 text-gray-400 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_0_4px_#050505] z-10 group-hover:bg-blue-500 group-hover:text-[#050505] transition-colors">
-              <Terminal size={16} />
-            </div>
-
-            <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] p-6 border border-gray-900 bg-[#0A0A0A] hover:border-blue-500/30 transition-colors relative">
-              <div className="flex flex-col xl:flex-row xl:items-center justify-between mb-2 gap-2">
-                <h3 className="font-bold text-xl text-white uppercase tracking-wider">Análise e Desenv. de Sistemas</h3>
-                <span className="text-gray-500 font-mono text-xs border border-gray-800 px-2 py-1 shrink-0">2025 - 2027</span>
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              transition={{ delay: 0.2 }}
+              className="exp-card-glass p-8 md:p-10"
+            >
+              <div className="flex justify-between items-start mb-8 border-b border-white/10 pb-6">
+                <div>
+                  <span className="mono text-5xl font-black text-white/10">02</span>
+                </div>
+                <span className="mono text-xs text-white/40 border border-white/10 px-3 py-1">2025 — 2027</span>
               </div>
-              <h4 className="text-gray-400 font-mono text-sm mb-4">FACENS</h4>
-              <p className="text-gray-500 text-sm">
-                Formação superior focada em engenharia de software, modelagem de sistemas, banco de dados e arquitetura de aplicações corporativas.
-              </p>
-            </div>
+              <h3 className="text-2xl font-bold uppercase tracking-wide mb-2">Análise e Desenv. de Sistemas</h3>
+              <h4 className="text-xl text-white/60 mb-6 font-light">FACENS</h4>
+              <ul className="space-y-4 text-white/70">
+                <li className="flex items-start gap-3">
+                  <span className="text-white/40 mt-1">▹</span>
+                  Formação focada em engenharia de software e modelagem de sistemas.
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-white/40 mt-1">▹</span>
+                  Banco de dados, estrutura de dados e arquitetura de aplicações corporativas.
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-white/40 mt-1">▹</span>
+                  Práticas de desenvolvimento Ágil.
+                </li>
+              </ul>
+            </motion.div>
           </div>
-
         </div>
       </section>
-    </main>
+
+      {/* Projects Section */}
+      <section id="projetos" className="py-32 px-6 md:px-12 bg-[#020202]">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUp}
+            className="mb-24"
+          >
+            <p className="mono text-[#00b4d8] mb-4">{"// projetos"}</p>
+            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">O que eu construí</h2>
+          </motion.div>
+
+          <div className="space-y-32">
+            {projetos.map((proj, idx) => (
+              <motion.div 
+                key={proj.id}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={fadeUp}
+                className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center"
+              >
+                <div className={`order-2 ${idx % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
+                  <div className="flex items-center gap-4 mb-6">
+                    <span className="mono text-2xl font-black text-[#00b4d8]/40">{proj.id}</span>
+                    <div className="h-[1px] flex-1 bg-white/10" />
+                    {proj.icone}
+                  </div>
+                  
+                  <h3 className="mono text-sm text-[#00b4d8] uppercase tracking-widest mb-4">
+                    {proj.subtitulo}
+                  </h3>
+                  <h4 className="text-4xl font-bold uppercase tracking-tight mb-8">
+                    {proj.titulo}
+                  </h4>
+                  
+                  <p className="text-white/60 text-lg leading-relaxed mb-8">
+                    {proj.descricao}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-10">
+                    {proj.tecnologias.map(tech => (
+                      <span key={tech} className="mono text-xs uppercase tracking-wider text-white/80 bg-white/5 border border-white/10 px-3 py-1.5">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  <a href={proj.linkGithub} target="_blank" rel="noopener noreferrer" className="btn-ghost inline-flex gap-3">
+                    Analisar Código <Github size={18} />
+                  </a>
+                </div>
+
+                <div className={`order-1 ${idx % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}>
+                  <div className="browser-chrome">
+                    <div className="browser-dots">
+                      <span className="browser-dot browser-dot--red" />
+                      <span className="browser-dot browser-dot--yellow" />
+                      <span className="browser-dot browser-dot--green" />
+                    </div>
+                    <div className="browser-url-bar text-center">
+                      {proj.url || "github.com/lzAmaral"}
+                    </div>
+                  </div>
+                  <div className="bg-[#0a0a0a] border border-t-0 border-[#222] border-b-lg h-[300px] flex items-center justify-center relative overflow-hidden group">
+                    {proj.img ? (
+                      <div className="relative w-full h-full">
+                        <Image 
+                          src={proj.img} 
+                          alt={proj.titulo} 
+                          fill
+                          className="object-cover object-top opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700" 
+                        />
+                      </div>
+                    ) : (
+                      <>
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#00b4d8]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                        <pre className="mono text-[#00b4d8]/30 text-xs w-full overflow-hidden p-10 group-hover:text-[#00b4d8]/60 transition-colors duration-500">
+{`public class ${proj.titulo.replace(/ /g, '')} {
+    @Autowired
+    private SystemEngine engine;
+    
+    public void execute() {
+        // High performance execution
+        engine.runOptimizer(true);
+        engine.scale(100);
+        return success();
+    }
+}`}
+                        </pre>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          
+          <div className="mt-32 text-center">
+            <a href="https://github.com/lzAmaral" target="_blank" rel="noopener noreferrer" className="btn-fill">
+              Ver GitHub Completo →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Skills Section */}
+      <section id="skills" className="py-32 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUp}
+            className="mb-16"
+          >
+            <p className="mono text-[#00b4d8] mb-4">{"// skills"}</p>
+            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">Stack Técnico</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { 
+                title: "Backend Core", 
+                color: "#00b4d8", 
+                skills: ["Java 17+", "Spring Boot", "Spring Data JPA", "Spring Security", "REST APIs", "Node.js"] 
+              },
+              { 
+                title: "Banco de Dados", 
+                color: "#ff8c42", 
+                skills: ["PostgreSQL", "MySQL", "pgvector", "Modelagem MER", "Flyway"] 
+              },
+              { 
+                title: "IA & Automação", 
+                color: "#a855f7", 
+                skills: ["OpenAI API", "RAG Pipeline", "Embeddings", "Telegram Bot API", "Automação"] 
+              },
+              { 
+                title: "Infra & DevOps", 
+                color: "#27c93f", 
+                skills: ["Docker", "Git", "Clean Architecture", "Solid", "CI/CD Básico"] 
+              }
+            ].map((group, i) => (
+              <motion.div 
+                key={i}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                transition={{ delay: i * 0.1 }}
+                className="exp-card-glass p-8 group"
+              >
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: group.color }} />
+                  <h3 className="font-bold uppercase tracking-widest">{group.title}</h3>
+                </div>
+                <div className="flex flex-col gap-3">
+                  {group.skills.map(skill => (
+                    <span key={skill} className="mono text-sm text-white/60 group-hover:text-white/90 transition-colors">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contato" className="py-32 px-6 md:px-12 border-t border-white/5 bg-[#020202]">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+          >
+            <p className="mono text-[#00b4d8] mb-6">{"// iniciar_conexao"}</p>
+            <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-8">Bora construir<br/>algo robusto?</h2>
+            <p className="text-xl text-white/60 font-light mb-16 max-w-2xl mx-auto">
+              Sempre aberto a novos desafios em engenharia de software, desenvolvimento de APIs ou integração com IAs.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row justify-center gap-6">
+              <a href="mailto:luizgustavodecamposama@gmail.com" className="btn-fill text-lg">
+                luizgustavodecamposama@gmail.com
+              </a>
+              <a href="https://www.linkedin.com/in/luiz-gustavo-de-campos-amaral-122622278/" target="_blank" rel="noopener noreferrer" className="btn-ghost text-lg">
+                LinkedIn <ExternalLink size={18} className="ml-2" />
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 border-t border-white/5 px-6 md:px-12 text-center md:text-left">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="mono text-xs text-white/40 uppercase tracking-widest">
+            Desenvolvido com foco em performance.
+          </p>
+          <div className="flex items-center gap-2 mono text-xs uppercase tracking-widest">
+            <span className="w-2 h-2 rounded-full bg-[#00b4d8] animate-pulse" />
+            <span className="text-[#00b4d8]">SISTEMA.STATUS: ONLINE</span>
+          </div>
+        </div>
+      </footer>
+    </>
   );
 }

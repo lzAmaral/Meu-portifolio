@@ -1,26 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Luiz Amaral | Desenvolvedor Backend Java · Spring Boot",
+  title: "Luiz Amaral | Desenvolvedor Backend Java",
   description:
-    "Desenvolvedor Backend especializado em Java, Spring Boot e APIs escaláveis. Experiência internacional (Canadá). Disponível para oportunidades.",
+    "Desenvolvedor Backend especializado em Java, Spring Boot e APIs escaláveis. Foco em performance e automação inteligente.",
   openGraph: {
     title: "Luiz Amaral | Desenvolvedor Backend Java",
     description:
-      "APIs de alta performance com Java, Spring Boot, Docker e PostgreSQL.",
-    url: "https://luizamaral.vercel.app",
+      "Engenheiro Backend com expertise em Java, APIs de alta performance e modelagem relacional.",
+    url: "https://luizamaral.dev",
     siteName: "Luiz Amaral — Backend Developer",
     locale: "pt_BR",
     type: "website",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Luiz Amaral | Backend Developer",
     description:
-      "Java · Spring Boot · Docker · PostgreSQL — Disponível para oportunidades.",
+      "Java · Spring Boot · PostgreSQL — Engenharia Robusta.",
   },
 };
 
@@ -39,9 +39,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
       >
         {children}
       </body>
