@@ -13,23 +13,23 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Luiz Amaral | Desenvolvedor Backend Java",
+  title: "Luiz Amaral | Desenvolvedor Fullstack e Sistemas Agênticos",
   description:
-    "Desenvolvedor Backend especializado em Java, Spring Boot e APIs escaláveis. Foco em performance e automação inteligente.",
+    "Desenvolvedor Fullstack especializado em sistemas agênticos, LangGraph, RAG e automação de processos com IA.",
   openGraph: {
-    title: "Luiz Amaral | Desenvolvedor Backend Java",
+    title: "Luiz Amaral | Desenvolvedor Fullstack e Sistemas Agênticos",
     description:
-      "Engenheiro Backend com expertise em Java, APIs de alta performance e modelagem relacional.",
+      "Aplicações que conectam agentes de IA, dados e ferramentas para automatizar processos reais.",
     url: "https://luizamaral.dev",
-    siteName: "Luiz Amaral — Backend Developer",
+    siteName: "Luiz Amaral — Fullstack Developer",
     locale: "pt_BR",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Luiz Amaral | Backend Developer",
+    title: "Luiz Amaral | Fullstack e Sistemas Agênticos",
     description:
-      "Java · Spring Boot · PostgreSQL — Engenharia Robusta.",
+      "LangGraph · RAG · Embeddings · Desenvolvimento Fullstack.",
   },
 };
 

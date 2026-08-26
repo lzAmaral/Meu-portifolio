@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { 
-  Terminal, Database, Cpu, Github, 
-  Download, ExternalLink, Zap
+import {
+  Terminal, Database, Cpu, Github,
+  Download, ExternalLink
 } from "lucide-react";
 
 
@@ -52,6 +53,18 @@ const CursorOrb = () => {
   );
 };
 
+type Projeto = {
+  id: string;
+  titulo: string;
+  subtitulo: string;
+  icone: ReactNode;
+  descricao: string;
+  tecnologias: string[];
+  linkGithub: string;
+  img?: string;
+  url?: string;
+};
+
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -77,37 +90,24 @@ export default function Home() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" as const } }
   };
 
-  const projetos = [
+  const projetos: Projeto[] = [
     {
       id: "01",
-      titulo: "E-commerce Ana Modas",
-      subtitulo: "Plataforma de Gestão de Vendas",
-      icone: <Database className="w-5 h-5 text-[#00b4d8]" />,
-      descricao: "Solução completa de e-commerce construída para automatizar processos físicos. A arquitetura foi desenhada em camadas rigorosas (Controller, Service, Repository), focando em integridade transacional e escalabilidade.",
-      tecnologias: ["Java 17", "Spring Boot", "MySQL", "Telegram API", "REST"],
-      linkGithub: "https://github.com/lzAmaral/UniLoja",
-      img: "/image.png",
-      url: "anamodas.com.br"
+      titulo: "WebCars",
+      subtitulo: "Loja de Carros Online com IA",
+      icone: <Cpu className="w-5 h-5 text-[#00b4d8]" />,
+      descricao: "E-commerce de veículos com catálogo, filtros e comparação lado a lado. Inclui assistente de IA em RAG ancorado no catálogo real, captura de leads com pontuação de interesse (frio/morno/quente) e painel administrativo completo.",
+      tecnologias: ["Next.js", "TypeScript", "Node.js", "Express", "PostgreSQL", "pgvector", "Gemini AI"],
+      linkGithub: "https://github.com/lzAmaral/FluxoMind_WebCars"
     },
     {
       id: "02",
-      titulo: "Pipeline RAG com IA",
-      subtitulo: "Motor de Busca Semântica (Em dev)",
-      icone: <Cpu className="w-5 h-5 text-[#00b4d8]" />,
-      descricao: "Pipeline backend para indexação vetorial e recuperação de contexto. Integra a API da OpenAI com banco PostgreSQL para criar uma base de conhecimento inteligente.",
-      tecnologias: ["Java", "Spring Boot", "pgvector", "OpenAI API", "PostgreSQL"],
-      linkGithub: "https://github.com/lzAmaral/Estudos_RAG_OpenAI"
-    },
-    {
-      id: "03",
-      titulo: "Solux Energy",
-      subtitulo: "Plataforma de Rateio de Energia",
-      icone: <Zap className="w-5 h-5 text-[#00b4d8]" />,
-      descricao: "Uma plataforma para automatizar o rateio de créditos de energia solar em Geração Distribuída, resolvendo regras de negócio complexas de rateio que costumam ser feitas manualmente em planilhas.",
-      tecnologias: ["Java", "Spring Boot", "React", "Tailwind CSS", "PostgreSQL", "Flyway"],
-      linkGithub: "https://github.com/lzAmaral/Solux-UPX",
-      img: "/solux.jpg",
-      url: "soluxenergy.com.br"
+      titulo: "Mercado Tech Brasil",
+      subtitulo: "Analytics do Mercado de TI (CAGED)",
+      icone: <Database className="w-5 h-5 text-[#00b4d8]" />,
+      descricao: "Plataforma analítica que transforma mais de 411 mil registros oficiais do Novo CAGED em insights sobre salários e contratações de TI no Brasil, com pipeline de ETL em Spring Batch e dashboards interativos.",
+      tecnologias: ["Java", "Spring Boot", "Spring Batch", "PostgreSQL", "JavaScript", "Chart.js"],
+      linkGithub: "https://github.com/lzAmaral/caged-etl-analytics"
     }
   ];
 
@@ -154,24 +154,14 @@ export default function Home() {
           </motion.p>
           
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.95] max-w-5xl">
-            {["Construindo", "APIs", "robustas,"].map((word, i) => (
+            {["Transformo", "processos", "em"].map((word, i) => (
               <motion.span key={i} custom={i} variants={wordAnimation} initial="hidden" animate="visible" className="inline-block mr-[0.2em]">
                 {word}
               </motion.span>
             ))}
             <br className="hidden md:block" />
-            {["escaláveis"].map((word, i) => (
+            {["software", "que", "funciona."].map((word, i) => (
               <motion.span key={i+3} custom={i+3} variants={wordAnimation} initial="hidden" animate="visible" className="inline-block mr-[0.2em] text-[#00b4d8]">
-                {word}
-              </motion.span>
-            ))}
-            {["e", "de"].map((word, i) => (
-              <motion.span key={i+4} custom={i+4} variants={wordAnimation} initial="hidden" animate="visible" className="inline-block mr-[0.2em]">
-                {word}
-              </motion.span>
-            ))}
-            {["alta", "performance."].map((word, i) => (
-              <motion.span key={i+6} custom={i+6} variants={wordAnimation} initial="hidden" animate="visible" className="inline-block mr-[0.2em] text-[#00b4d8]">
                 {word}
               </motion.span>
             ))}
@@ -183,7 +173,7 @@ export default function Home() {
             transition={{ delay: 1.2, duration: 0.8 }}
             className="mt-12 text-white/60 text-lg md:text-xl max-w-2xl font-light leading-relaxed"
           >
-            Engenheiro de Software Backend especializado em Java, Spring Boot e ecossistemas escaláveis. Foco em integridade transacional, modelagem relacional e automação inteligente.
+            Desenvolvedor Fullstack especializado em sistemas agênticos. Construo aplicações que conectam agentes de IA, dados e ferramentas para automatizar processos reais.
           </motion.p>
           
           <motion.div 
@@ -225,7 +215,7 @@ export default function Home() {
       {/* Experience Section */}
       <section id="experiencia" className="py-32 px-6 md:px-12 relative">
         <div className="max-w-7xl mx-auto">
-          <motion.div 
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
@@ -233,73 +223,94 @@ export default function Home() {
             className="mb-16"
           >
             <p className="mono text-[#00b4d8] mb-4">{"// trajetória"}</p>
-            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">Experiência & Formação</h2>
+            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">Experiência Profissional</h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              className="exp-card-glass p-8 md:p-10"
-            >
-              <div className="flex justify-between items-start mb-8 border-b border-white/10 pb-6">
-                <div>
-                  <span className="mono text-5xl font-black text-white/10">01</span>
-                </div>
-                <span className="mono text-xs text-[#00b4d8] bg-[#00b4d8]/10 px-3 py-1 border border-[#00b4d8]/20">2026 — ATUAL</span>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="exp-card-glass p-8 md:p-10 max-w-2xl"
+          >
+            <div className="flex justify-between items-start mb-8 border-b border-white/10 pb-6">
+              <div>
+                <span className="mono text-5xl font-black text-white/10">01</span>
               </div>
-              <h3 className="text-2xl font-bold uppercase tracking-wide mb-2">Estagiário de Tecnologia</h3>
-              <h4 className="text-xl text-white/60 mb-6 font-light">SESI (Espaço Maker)</h4>
-              <ul className="space-y-4 text-white/70">
-                <li className="flex items-start gap-3">
-                  <span className="text-[#00b4d8] mt-1">▹</span>
-                  Integração entre tecnologia e educação através de atividades práticas e inovadoras.
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-[#00b4d8] mt-1">▹</span>
-                  Ensino de lógica de programação e ferramentas tecnológicas.
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-[#00b4d8] mt-1">▹</span>
-                  Suporte técnico e operacional do ambiente.
-                </li>
-              </ul>
-            </motion.div>
+              <span className="mono text-xs text-[#00b4d8] bg-[#00b4d8]/10 px-3 py-1 border border-[#00b4d8]/20">2026 — ATUAL</span>
+            </div>
+            <h3 className="text-2xl font-bold uppercase tracking-wide mb-2">Desenvolvedor Fullstack</h3>
+            <h4 className="text-xl text-white/60 mb-6 font-light">Fluxomind</h4>
+            <ul className="space-y-4 text-white/70">
+              <li className="flex items-start gap-3">
+                <span className="text-[#00b4d8] mt-1">▹</span>
+                Desenvolvimento fullstack de aplicações e fluxos de trabalho baseados em IA.
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#00b4d8] mt-1">▹</span>
+                Construção de sistemas agênticos com LangGraph, incluindo ferramentas, memória, estado e fluxos de decisão.
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#00b4d8] mt-1">▹</span>
+                Implementação de pipelines RAG, embeddings, indexação e recuperação semântica sobre bases de conhecimento.
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#00b4d8] mt-1">▹</span>
+                Desenvolvimento de harnesses para fornecer contexto, validações e mecanismos de controle aos agentes.
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#00b4d8] mt-1">▹</span>
+                Integração de agentes com APIs, bancos de dados, serviços externos e interfaces utilizadas pelos usuários.
+              </li>
+            </ul>
+          </motion.div>
+        </div>
+      </section>
 
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              transition={{ delay: 0.2 }}
-              className="exp-card-glass p-8 md:p-10"
-            >
-              <div className="flex justify-between items-start mb-8 border-b border-white/10 pb-6">
-                <div>
-                  <span className="mono text-5xl font-black text-white/10">02</span>
-                </div>
-                <span className="mono text-xs text-white/40 border border-white/10 px-3 py-1">2025 — 2027</span>
+      {/* Education Section */}
+      <section id="formacao" className="py-32 px-6 md:px-12 relative bg-[#020202] border-t border-white/5">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUp}
+            className="mb-16"
+          >
+            <p className="mono text-[#00b4d8] mb-4">{"// formação"}</p>
+            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">Formação Acadêmica</h2>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="exp-card-glass p-8 md:p-10 max-w-2xl"
+          >
+            <div className="flex justify-between items-start mb-8 border-b border-white/10 pb-6">
+              <div>
+                <span className="mono text-5xl font-black text-white/10">02</span>
               </div>
-              <h3 className="text-2xl font-bold uppercase tracking-wide mb-2">Análise e Desenv. de Sistemas</h3>
-              <h4 className="text-xl text-white/60 mb-6 font-light">FACENS</h4>
-              <ul className="space-y-4 text-white/70">
-                <li className="flex items-start gap-3">
-                  <span className="text-white/40 mt-1">▹</span>
-                  Formação focada em engenharia de software e modelagem de sistemas.
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-white/40 mt-1">▹</span>
-                  Banco de dados, estrutura de dados e arquitetura de aplicações corporativas.
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-white/40 mt-1">▹</span>
-                  Práticas de desenvolvimento Ágil.
-                </li>
-              </ul>
-            </motion.div>
-          </div>
+              <span className="mono text-xs text-white/40 border border-white/10 px-3 py-1">2025 — 2027</span>
+            </div>
+            <h3 className="text-2xl font-bold uppercase tracking-wide mb-2">Análise e Desenv. de Sistemas</h3>
+            <h4 className="text-xl text-white/60 mb-6 font-light">FACENS</h4>
+            <ul className="space-y-4 text-white/70">
+              <li className="flex items-start gap-3">
+                <span className="text-white/40 mt-1">▹</span>
+                Formação focada em engenharia de software e modelagem de sistemas.
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-white/40 mt-1">▹</span>
+                Banco de dados, estrutura de dados e arquitetura de aplicações corporativas.
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-white/40 mt-1">▹</span>
+                Práticas de desenvolvimento Ágil.
+              </li>
+            </ul>
+          </motion.div>
         </div>
       </section>
 
