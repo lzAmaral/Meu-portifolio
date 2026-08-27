@@ -98,7 +98,9 @@ export default function Home() {
       icone: <Cpu className="w-5 h-5 text-[#00b4d8]" />,
       descricao: "E-commerce de veículos com catálogo, filtros e comparação lado a lado. Inclui assistente de IA em RAG ancorado no catálogo real, captura de leads com pontuação de interesse (frio/morno/quente) e painel administrativo completo.",
       tecnologias: ["Next.js", "TypeScript", "Node.js", "Express", "PostgreSQL", "pgvector", "Gemini AI"],
-      linkGithub: "https://github.com/lzAmaral/FluxoMind_WebCars"
+      linkGithub: "https://github.com/lzAmaral/FluxoMind_WebCars",
+      img: "/webcars.png",
+      url: "github.com/lzAmaral/FluxoMind_WebCars"
     },
     {
       id: "02",
@@ -107,7 +109,9 @@ export default function Home() {
       icone: <Database className="w-5 h-5 text-[#00b4d8]" />,
       descricao: "Plataforma analítica que transforma mais de 411 mil registros oficiais do Novo CAGED em insights sobre salários e contratações de TI no Brasil, com pipeline de ETL em Spring Batch e dashboards interativos.",
       tecnologias: ["Java", "Spring Boot", "Spring Batch", "PostgreSQL", "JavaScript", "Chart.js"],
-      linkGithub: "https://github.com/lzAmaral/caged-etl-analytics"
+      linkGithub: "https://github.com/lzAmaral/caged-etl-analytics",
+      img: "/mercado-tech-brasil.jpeg",
+      url: "github.com/lzAmaral/caged-etl-analytics"
     }
   ];
 
