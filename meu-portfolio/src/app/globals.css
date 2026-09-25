@@ -22,7 +22,10 @@ body {
   font-family: var(--font-sans);
   overflow-x: hidden;
   scroll-behavior: smooth;
-  cursor: none; /* We will use custom cursor */
+}
+
+section[id] {
+  scroll-margin-top: 5.5rem;
 }
 
 /* Custom Scrollbar */
@@ -46,28 +49,6 @@ body {
   color: var(--accent);
 }
 
-/* Custom Cursor Orb */
-.cursor-orb {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 32px;
-  height: 32px;
-  border: 2px solid var(--accent);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s, background-color 0.2s;
-  mix-blend-mode: difference;
-}
-.cursor-hover .cursor-orb {
-  width: 64px;
-  height: 64px;
-  background-color: var(--accent);
-  opacity: 0.5;
-}
-
 /* Typography Utilities */
 .mono {
   font-family: var(--font-mono);
@@ -86,7 +67,7 @@ body {
   letter-spacing: 0.1em;
   padding: 1rem 2rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: none;
+  cursor: pointer;
   border: 1px solid var(--accent);
 }
 .btn-fill:hover {
@@ -106,7 +87,7 @@ body {
   letter-spacing: 0.1em;
   padding: 1rem 2rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: none;
+  cursor: pointer;
   border: 1px solid var(--accent-transparent);
 }
 .btn-ghost:hover {
@@ -114,52 +95,35 @@ body {
   background-color: var(--accent-transparent);
 }
 
-/* Aurora Background */
-.hero-aurora {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  z-index: -1;
-  pointer-events: none;
-}
-.aurora-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.4;
-  animation: float 20s infinite ease-in-out alternate;
-}
-.aurora-orb-1 {
-  top: -10%;
-  left: -10%;
-  width: 50vw;
-  height: 50vw;
-  background: var(--accent);
-  animation-delay: 0s;
-}
-.aurora-orb-2 {
-  bottom: -20%;
-  right: -10%;
-  width: 60vw;
-  height: 60vw;
-  background: #0077b6; /* darker blue */
-  animation-delay: -5s;
-}
-.aurora-orb-3 {
-  top: 40%;
-  left: 30%;
-  width: 40vw;
-  height: 40vw;
-  background: #03045e; /* deepest blue */
-  animation-delay: -10s;
+/* Site-wide interactive background */
+.site-shell {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
 }
 
-@keyframes float {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(5%, 5%) scale(1.1); }
+.site-dot-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.site-content {
+  position: relative;
+  z-index: 1;
+}
+
+.section-shade {
+  background-color: rgba(2, 2, 2, 0.5);
+}
+
+.hero-plantin {
+  font-family: "Plantin MT Pro", "Plantin Pro", var(--font-crimson-pro), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: -0.055em;
 }
 
 /* Browser Mockup CSS */

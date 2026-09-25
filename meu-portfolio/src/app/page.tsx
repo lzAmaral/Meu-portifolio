@@ -4,54 +4,28 @@ import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import DotField from "@/components/DotField";
+import Dock from "@/components/Dock";
 import {
   Terminal, Database, Cpu, Github,
-  Download, ExternalLink
+  Download, ExternalLink, House, BriefcaseBusiness, FolderOpen, Layers3, Mail
 } from "lucide-react";
 
-
-const CursorOrb = () => {
-  const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
-  const [isHovering, setIsHovering] = useState(false);
-
-  useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.tagName.toLowerCase() === 'a' || 
-        target.tagName.toLowerCase() === 'button' ||
-        target.closest('a') || 
-        target.closest('button')
-      ) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
-      }
-    };
-
-    window.addEventListener("mousemove", updateMousePosition);
-    window.addEventListener("mouseover", handleMouseOver);
-    
-    return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
-      window.removeEventListener("mouseover", handleMouseOver);
-    };
-  }, []);
-
-  return (
-    <div 
-      className={`cursor-orb hidden md:block ${isHovering ? 'scale-[2.5] bg-[#00b4d8]/40 border-transparent' : ''}`}
-      style={{ 
-        left: `${mousePosition.x}px`, 
-        top: `${mousePosition.y}px` 
-      }}
-    />
-  );
+const scrollToSection = (id: string) => {
+  document.getElementById(id)?.scrollIntoView({
+    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+  });
+  window.history.replaceState(null, "", `#${id}`);
 };
+
+const dockItems = [
+  { icon: <House size={20} />, label: "Início", onClick: () => scrollToSection("inicio") },
+  { icon: <BriefcaseBusiness size={20} />, label: "Experiência", onClick: () => scrollToSection("experiencia") },
+  { icon: <FolderOpen size={20} />, label: "Projetos", onClick: () => scrollToSection("projetos") },
+  { icon: <Layers3 size={20} />, label: "Skills", onClick: () => scrollToSection("skills") },
+  { icon: <Mail size={20} />, label: "Contato", onClick: () => scrollToSection("contato") },
+];
+
 
 type Projeto = {
   id: string;
@@ -116,37 +90,39 @@ export default function Home() {
   ];
 
   return (
-    <>
-      <CursorOrb />
-      
-      {/* Navbar */}
-      <motion.nav 
+    <div className="site-shell">
+      <div className="site-dot-field">
+        <DotField
+          dotRadius={1.5}
+          dotSpacing={14}
+          bulgeStrength={67}
+          glowRadius={160}
+          sparkle={false}
+          waveAmplitude={0}
+          gradientFrom="rgba(0, 180, 216, 0.38)"
+          gradientTo="rgba(55, 112, 150, 0.2)"
+          glowColor="#0b4561"
+        />
+      </div>
+      <div className="site-content">
+      {/* Brand header */}
+      <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-4 bg-[#050505]/80 backdrop-blur-md border-b border-white/5' : 'py-8'}`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-          <a href="#" className="font-bold text-xl tracking-tighter hover:text-[#00b4d8] transition-colors">
+          <a href="#inicio" className="font-bold text-xl tracking-tighter hover:text-[#00b4d8] transition-colors">
             luiz<span className="text-[#00b4d8]">.</span>amaral
           </a>
-          <ul className="hidden md:flex gap-8 mono text-sm uppercase tracking-widest text-white/60">
-            <li><a href="#experiencia" className="hover:text-white transition-colors">experiência</a></li>
-            <li><a href="#projetos" className="hover:text-white transition-colors">projetos</a></li>
-            <li><a href="#skills" className="hover:text-white transition-colors">skills</a></li>
-            <li><a href="#contato" className="hover:text-white transition-colors">contato</a></li>
-          </ul>
         </div>
-      </motion.nav>
+      </motion.header>
+
+      <Dock items={dockItems} panelHeight={68} baseItemSize={50} magnification={70} />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-32 pb-20 px-6 md:px-12 overflow-hidden">
-        <div className="hero-aurora">
-          <div className="aurora-orb aurora-orb-1" />
-          <div className="aurora-orb aurora-orb-2" />
-          <div className="aurora-orb aurora-orb-3" />
-        </div>
-        
+      <section id="inicio" className="relative min-h-screen flex items-center pt-32 pb-20 px-6 md:px-12 overflow-hidden">
         <div className="max-w-7xl mx-auto w-full z-10">
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -165,7 +141,7 @@ export default function Home() {
             ))}
             <br className="hidden md:block" />
             {["software", "que", "funciona."].map((word, i) => (
-              <motion.span key={i+3} custom={i+3} variants={wordAnimation} initial="hidden" animate="visible" className="inline-block mr-[0.2em] text-[#00b4d8]">
+              <motion.span key={i+3} custom={i+3} variants={wordAnimation} initial="hidden" animate="visible" className="hero-plantin inline-block mr-[0.2em] text-[#00b4d8]">
                 {word}
               </motion.span>
             ))}
@@ -272,7 +248,7 @@ export default function Home() {
       </section>
 
       {/* Education Section */}
-      <section id="formacao" className="py-32 px-6 md:px-12 relative bg-[#020202] border-t border-white/5">
+      <section id="formacao" className="py-32 px-6 md:px-12 relative section-shade border-t border-white/5">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -319,7 +295,7 @@ export default function Home() {
       </section>
 
       {/* Projects Section */}
-      <section id="projetos" className="py-32 px-6 md:px-12 bg-[#020202]">
+      <section id="projetos" className="py-32 px-6 md:px-12 section-shade">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial="hidden"
@@ -490,7 +466,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contato" className="py-32 px-6 md:px-12 border-t border-white/5 bg-[#020202]">
+      <section id="contato" className="py-32 px-6 md:px-12 border-t border-white/5 section-shade">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial="hidden"
@@ -517,7 +493,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-white/5 px-6 md:px-12 text-center md:text-left">
+      <footer className="pt-12 pb-32 border-t border-white/5 px-6 md:px-12 text-center md:text-left">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="mono text-xs text-white/40 uppercase tracking-widest">
             Desenvolvido com foco em performance.
@@ -528,6 +504,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
-    </>
+      </div>
+    </div>
   );
 }
