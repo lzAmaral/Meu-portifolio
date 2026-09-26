@@ -163,7 +163,7 @@ export default function Home() {
             className="mt-12 flex flex-wrap gap-6"
           >
             <a href="#projetos" className="btn-fill">Ver projetos ↓</a>
-            <a href="/Luiz_Gustavo_Amaral_CV.pdf" download className="btn-ghost gap-2">Baixar_CV <Download size={18} /></a>
+            <a href="/Curriculo_Luiz-Amaral.pdf" download className="btn-ghost gap-2">Baixar_CV <Download size={18} /></a>
           </motion.div>
 
           <motion.div 
