@@ -31,12 +31,21 @@ export const metadata: Metadata = {
     siteName: "Luiz Amaral · AI Engineer",
     locale: "pt_BR",
     type: "website",
+    images: [
+      {
+        url: "https://luizamaral.vercel.app/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Luiz Amaral · AI Engineer e Sistemas Agênticos",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Luiz Amaral | AI Engineer & Sistemas Agênticos",
     description:
       "LangGraph · RAG · MCP · Fullstack. Software que coloca a IA pra trabalhar.",
+    images: ["https://luizamaral.vercel.app/og.png"],
   },
 };
 
