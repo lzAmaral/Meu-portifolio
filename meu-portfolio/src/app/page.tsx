@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import DotField from "@/components/DotField";
 import Dock from "@/components/Dock";
 import {
-  Terminal, Database, Cpu, Github,
-  Download, ExternalLink, House, BriefcaseBusiness, FolderOpen, Layers3, Mail
+  Github, Download, ExternalLink, House, BriefcaseBusiness,
+  FolderOpen, Layers3, Mail
 } from "lucide-react";
 
 const scrollToSection = (id: string) => {
@@ -18,29 +17,321 @@ const scrollToSection = (id: string) => {
   window.history.replaceState(null, "", `#${id}`);
 };
 
-const dockItems = [
-  { icon: <House size={20} />, label: "Início", onClick: () => scrollToSection("inicio") },
-  { icon: <BriefcaseBusiness size={20} />, label: "Experiência", onClick: () => scrollToSection("experiencia") },
-  { icon: <FolderOpen size={20} />, label: "Projetos", onClick: () => scrollToSection("projetos") },
-  { icon: <Layers3 size={20} />, label: "Skills", onClick: () => scrollToSection("skills") },
-  { icon: <Mail size={20} />, label: "Contato", onClick: () => scrollToSection("contato") },
-];
-
+type Lang = "pt" | "en";
 
 type Projeto = {
   id: string;
   titulo: string;
   subtitulo: string;
-  icone: ReactNode;
+  status?: string;
   descricao: string;
   tecnologias: string[];
-  linkGithub: string;
-  img?: string;
-  url?: string;
+  linkGithub?: string;
+  linkSite?: string;
+  img: string;
+  termTitle: string;
+  dotColor: string;
 };
+
+type Entry = {
+  periodo: string;
+  cargo: string;
+  org: string;
+  bullets: string[];
+  destaque?: boolean;
+};
+
+const dict = {
+  pt: {
+    announce: "Novo projeto: ",
+    announceName: "Trama",
+    announceRest: ": um app nativo para macOS que orquestra agentes de código. ",
+    announceCta: "Ver no GitHub",
+    nav: { inicio: "Início", trajetoria: "Trajetória", projetos: "Projetos", stack: "Stack", contato: "Contato" },
+    heroTag: "// luiz amaral · sorocaba, sp",
+    heroLine1: "Muitos falam de IA.",
+    heroLine2: "Eu construo os sistemas que a colocam pra ",
+    heroAccent: "trabalhar.",
+    heroSub: "AI ENGINEER · SISTEMAS AGÊNTICOS · FULLSTACK",
+    heroDesc: "Software Engineer na Fluxomind. Construo agentes com LangGraph, pipelines de RAG e integrações via MCP, com supervisão humana sobre ações sensíveis e foco em operação real de negócio.",
+    ctaProjetos: "[ VER PROJETOS ]",
+    ctaCv: "[ BAIXAR CV ]",
+    stats: [
+      ["2+", "anos construindo"],
+      ["10+", "sistemas entregues"],
+      ["1", "SaaS em produção"],
+      ["12", "usuários reais"],
+    ],
+    nowLabel: "// agora",
+    nowTitle: "O que estou construindo",
+    nowBody1: "Na Fluxomind, trabalho na evolução de uma plataforma multi-tenant de agentes de IA: isolamento de dados, controle de acesso, integração de ferramentas via MCP e automação de processos conectada a dados reais.",
+    nowBody2: "Uso agentes de programação no meu próprio ciclo de desenvolvimento, da investigação de um problema à implementação e validação da mudança. O objetivo é sempre o mesmo: software útil, seguro e confiável.",
+    trajLabel: "// trajetória",
+    trajTitle: "Experiência & Formação",
+    expTitle: "EXPERIÊNCIA",
+    eduTitle: "FORMAÇÃO",
+    entries: [
+      {
+        periodo: "2026 - ATUAL",
+        cargo: "Software Engineer · Aplicações de IA",
+        org: "Fluxomind",
+        destaque: true,
+        bullets: [
+          "Evolução de plataforma multi-tenant de agentes: isolamento de dados, controle de acesso e automação de processos.",
+          "Sistemas agênticos com LangGraph: tools, memória, estado e fluxos de decisão.",
+          "Pipelines de RAG com embeddings e recuperação semântica sobre bases de conhecimento.",
+          "Integração de ferramentas via MCP, conectando agentes a APIs, bancos de dados e serviços na GCP.",
+          "Confiabilidade na execução dos agentes e supervisão humana sobre ações sensíveis.",
+        ],
+      },
+      {
+        periodo: "2025 - 2026",
+        cargo: "Estagiário de TI · Espaço Maker",
+        org: "SESI",
+        bullets: [
+          "Robótica, impressão 3D e apoio à equipe em competições da OBR. Foi onde decidi seguir carreira como dev.",
+        ],
+      },
+    ] as Entry[],
+    edu: [
+      {
+        periodo: "PREV. 2027",
+        cargo: "Análise e Desenvolvimento de Sistemas",
+        org: "FACENS · Sorocaba, SP",
+        bullets: ["Engenharia de software, banco de dados e arquitetura de aplicações."],
+      },
+      {
+        periodo: "2024",
+        cargo: "Técnico em Multimídia · Power BI",
+        org: "SENAI",
+        bullets: ["Curso e certificação em Power BI."],
+      },
+    ] as Entry[],
+    langsLabel: "IDIOMAS",
+    langsValue: "Português nativo · Inglês profissional",
+    projLabel: "// projetos",
+    projTitle: "O que eu construí",
+    projCode: "[ CÓDIGO ]",
+    projSite: "[ VER ONLINE ]",
+    projGithubAll: "[ VER GITHUB COMPLETO ]",
+    projetos: [
+      {
+        id: "01",
+        titulo: "Trama",
+        subtitulo: "Orquestrador de agentes de código para macOS",
+        status: "EM DESENVOLVIMENTO",
+        descricao: "App nativo que reúne projetos, agentes de código e terminais em um só lugar: acompanhe vários CLIs mantendo o contexto de cada pasta, tarefa e alteração. Interface em SwiftUI, motor de sessões em Rust e comunicação via RPC JSON, com worktrees, diffs, revisão de alterações e medições de memória para manter o app leve.",
+        tecnologias: ["Swift 6", "SwiftUI", "AppKit", "Rust", "SwiftTerm", "RPC JSON"],
+        linkGithub: "https://github.com/lzAmaral/Trama-AI",
+        img: "/trama.png",
+        termTitle: "trama · swift · rust",
+        dotColor: "var(--mint)",
+      },
+      {
+        id: "02",
+        titulo: "VetNoCampo",
+        subtitulo: "SaaS em produção · 12 usuários",
+        status: "EM PRODUÇÃO",
+        descricao: "“O atendimento acaba. A papelada também.” SaaS para veterinários de equinos que atendem no campo: registro de visitas, cobrança itemizada (consulta, medicação, deslocamento) e resumo em PDF direto do celular. Assinatura via Stripe com trial de 14 dias e agenda integrada ao Google Calendar.",
+        tecnologias: ["SaaS", "Mobile-first", "Stripe", "Google Calendar", "PDF"],
+        linkSite: "https://vetnocampo.com.br/landing",
+        img: "/vetnocampo.png",
+        termTitle: "vetnocampo.com.br · saas",
+        dotColor: "var(--mustard)",
+      },
+      {
+        id: "03",
+        titulo: "WebCars",
+        subtitulo: "E-commerce de veículos com IA",
+        descricao: "Catálogo com filtros e comparação lado a lado, assistente de IA em RAG ancorada no catálogo real (quando falta informação, ela pergunta em vez de inventar) e classificação de leads em frio, morno ou quente a partir do comportamento do usuário. Inclui painel administrativo completo.",
+        tecnologias: ["Next.js", "TypeScript", "Node.js", "PostgreSQL", "pgvector", "Gemini AI"],
+        linkGithub: "https://github.com/lzAmaral/FluxoMind_WebCars",
+        img: "/webcars.png",
+        termTitle: "webcars · next.js · rag",
+        dotColor: "var(--salmon)",
+      },
+    ] as Projeto[],
+    stackLabel: "// stack",
+    stackTitle: "Stack Técnico",
+    stackGroups: [
+      { title: "IA & Agentes", color: "var(--accent)", skills: ["LangGraph", "RAG & Embeddings", "MCP", "Agent Harnesses", "pgvector", "Gemini API"] },
+      { title: "Backend", color: "var(--salmon)", skills: ["Java 17+", "Spring Boot", "Spring Batch", "Spring AI", "Node.js", "REST APIs"] },
+      { title: "Frontend & Apps", color: "var(--mustard)", skills: ["TypeScript", "React", "Next.js", "Tailwind", "SwiftUI"] },
+      { title: "Dados & Infra", color: "var(--mint)", skills: ["PostgreSQL", "Supabase", "Docker", "GCP", "Vercel", "Stripe"] },
+    ],
+    contactLabel: "// contato",
+    contactTitle1: "Bora colocar a IA pra ",
+    contactAccent: "trabalhar",
+    contactTitle2: "?",
+    contactDesc: "Aberto a oportunidades como AI Engineer e Fullstack: sistemas agênticos, RAG, integrações e produto de verdade.",
+    contactEmail: "[ EMAIL ]",
+    contactLinkedin: "[ LINKEDIN ]",
+    contactGithub: "[ GITHUB ]",
+    contactCv: "[ BAIXAR CV ]",
+    footerLeft: "© 2026 Luiz Amaral · Sorocaba, SP",
+    footerStatus: "SISTEMA.STATUS: ONLINE",
+  },
+  en: {
+    announce: "New project: ",
+    announceName: "Trama",
+    announceRest: ": a native macOS app that orchestrates coding agents. ",
+    announceCta: "View on GitHub",
+    nav: { inicio: "Home", trajetoria: "Journey", projetos: "Projects", stack: "Stack", contato: "Contact" },
+    heroTag: "// luiz amaral · sorocaba, brazil",
+    heroLine1: "Everyone talks about AI.",
+    heroLine2: "I build the systems that put it to ",
+    heroAccent: "work.",
+    heroSub: "AI ENGINEER · AGENTIC SYSTEMS · FULLSTACK",
+    heroDesc: "Software Engineer at Fluxomind. I build agents with LangGraph, RAG pipelines and MCP integrations, with human oversight on sensitive actions and a focus on real business operations.",
+    ctaProjetos: "[ VIEW PROJECTS ]",
+    ctaCv: "[ DOWNLOAD CV ]",
+    stats: [
+      ["2+", "years building"],
+      ["10+", "systems shipped"],
+      ["1", "SaaS in production"],
+      ["12", "real users"],
+    ],
+    nowLabel: "// now",
+    nowTitle: "What I'm building",
+    nowBody1: "At Fluxomind I help evolve a multi-tenant AI agent platform: data isolation, access control, tool integration via MCP and process automation connected to real data.",
+    nowBody2: "I use coding agents in my own development cycle, from investigating a problem to implementing and validating the change. The goal is always the same: useful, safe, reliable software.",
+    trajLabel: "// journey",
+    trajTitle: "Experience & Education",
+    expTitle: "EXPERIENCE",
+    eduTitle: "EDUCATION",
+    entries: [
+      {
+        periodo: "2026 - PRESENT",
+        cargo: "Software Engineer · AI Applications",
+        org: "Fluxomind",
+        destaque: true,
+        bullets: [
+          "Evolving a multi-tenant agent platform: data isolation, access control and process automation.",
+          "Agentic systems with LangGraph: tools, memory, state and decision flows.",
+          "RAG pipelines with embeddings and semantic retrieval over knowledge bases.",
+          "Tool integration via MCP, connecting agents to APIs, databases and GCP services.",
+          "Agent execution reliability and human oversight over sensitive actions.",
+        ],
+      },
+      {
+        periodo: "2025 - 2026",
+        cargo: "IT Intern · Maker Space",
+        org: "SESI",
+        bullets: [
+          "Robotics, 3D printing and supporting the robotics team in OBR competitions. That is where I decided to become a dev.",
+        ],
+      },
+    ] as Entry[],
+    edu: [
+      {
+        periodo: "EXP. 2027",
+        cargo: "Systems Analysis and Development",
+        org: "FACENS · Sorocaba, Brazil",
+        bullets: ["Software engineering, databases and application architecture."],
+      },
+      {
+        periodo: "2024",
+        cargo: "Multimedia Technician · Power BI",
+        org: "SENAI",
+        bullets: ["Course and certification in Power BI."],
+      },
+    ] as Entry[],
+    langsLabel: "LANGUAGES",
+    langsValue: "Native Portuguese · Professional English",
+    projLabel: "// projects",
+    projTitle: "What I've built",
+    projCode: "[ CODE ]",
+    projSite: "[ LIVE SITE ]",
+    projGithubAll: "[ FULL GITHUB ]",
+    projetos: [
+      {
+        id: "01",
+        titulo: "Trama",
+        subtitulo: "Coding-agent orchestrator for macOS",
+        status: "IN DEVELOPMENT",
+        descricao: "A native app that brings local projects, coding agents and terminals together: track multiple CLIs while keeping the context of every folder, task and change. SwiftUI interface, Rust session engine and JSON RPC communication, with worktrees, diffs, change review and memory profiling to keep the app lean.",
+        tecnologias: ["Swift 6", "SwiftUI", "AppKit", "Rust", "SwiftTerm", "JSON RPC"],
+        linkGithub: "https://github.com/lzAmaral/Trama-AI",
+        img: "/trama.png",
+        termTitle: "trama · swift · rust",
+        dotColor: "var(--mint)",
+      },
+      {
+        id: "02",
+        titulo: "VetNoCampo",
+        subtitulo: "SaaS in production · 12 users",
+        status: "IN PRODUCTION",
+        descricao: "“The visit ends. So does the paperwork.” A SaaS for equine field veterinarians: visit logging, itemized billing (consultation, medication, travel) and PDF summaries straight from the phone. Stripe subscriptions with a 14-day trial and Google Calendar integration.",
+        tecnologias: ["SaaS", "Mobile-first", "Stripe", "Google Calendar", "PDF"],
+        linkSite: "https://vetnocampo.com.br/landing",
+        img: "/vetnocampo.png",
+        termTitle: "vetnocampo.com.br · saas",
+        dotColor: "var(--mustard)",
+      },
+      {
+        id: "03",
+        titulo: "WebCars",
+        subtitulo: "AI-powered vehicle e-commerce",
+        descricao: "Catalog with filters and side-by-side comparison, a RAG assistant grounded in the real inventory (when information is missing it asks instead of making things up) and lead scoring (cold, warm, hot) based on user behavior. Includes a full admin panel.",
+        tecnologias: ["Next.js", "TypeScript", "Node.js", "PostgreSQL", "pgvector", "Gemini AI"],
+        linkGithub: "https://github.com/lzAmaral/FluxoMind_WebCars",
+        img: "/webcars.png",
+        termTitle: "webcars · next.js · rag",
+        dotColor: "var(--salmon)",
+      },
+    ] as Projeto[],
+    stackLabel: "// stack",
+    stackTitle: "Tech Stack",
+    stackGroups: [
+      { title: "AI & Agents", color: "var(--accent)", skills: ["LangGraph", "RAG & Embeddings", "MCP", "Agent Harnesses", "pgvector", "Gemini API"] },
+      { title: "Backend", color: "var(--salmon)", skills: ["Java 17+", "Spring Boot", "Spring Batch", "Spring AI", "Node.js", "REST APIs"] },
+      { title: "Frontend & Apps", color: "var(--mustard)", skills: ["TypeScript", "React", "Next.js", "Tailwind", "SwiftUI"] },
+      { title: "Data & Infra", color: "var(--mint)", skills: ["PostgreSQL", "Supabase", "Docker", "GCP", "Vercel", "Stripe"] },
+    ],
+    contactLabel: "// contact",
+    contactTitle1: "Let's put AI to ",
+    contactAccent: "work",
+    contactTitle2: "?",
+    contactDesc: "Open to AI Engineer and Fullstack opportunities: agentic systems, RAG, integrations and real product work.",
+    contactEmail: "[ EMAIL ]",
+    contactLinkedin: "[ LINKEDIN ]",
+    contactGithub: "[ GITHUB ]",
+    contactCv: "[ DOWNLOAD CV ]",
+    footerLeft: "© 2026 Luiz Amaral · Sorocaba, Brazil",
+    footerStatus: "SYSTEM.STATUS: ONLINE",
+  },
+} as const;
+
+// Monograma "LA" em blocos pixelados, estilo tetris (col, row, cor)
+const pixelBlocks: [number, number, string][] = [
+  // L
+  [0, 0, "var(--accent)"],
+  [0, 1, "var(--accent)"],
+  [0, 2, "var(--accent)"],
+  [0, 3, "var(--accent)"],
+  [0, 4, "var(--mint)"], [1, 4, "var(--mint)"], [2, 4, "var(--mint)"],
+  // A
+  [5, 0, "var(--salmon)"],
+  [4, 1, "var(--salmon)"], [6, 1, "var(--salmon)"],
+  [4, 2, "var(--mustard)"], [5, 2, "var(--mustard)"], [6, 2, "var(--mustard)"],
+  [4, 3, "var(--salmon)"], [6, 3, "var(--salmon)"],
+  [4, 4, "var(--salmon)"], [6, 4, "var(--salmon)"],
+];
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
+  const [lang, setLang] = useState<Lang>("pt");
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("lang");
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- o HTML é pré-renderizado em PT; o idioma salvo só pode ser lido no cliente, após a hidratação
+    if (saved === "en" || saved === "pt") setLang(saved);
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem("lang", lang);
+    document.documentElement.lang = lang === "pt" ? "pt-BR" : "en";
+  }, [lang]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,44 +341,45 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const wordAnimation = {
-    hidden: { opacity: 0, y: 50 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.1, duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] as const }
-    })
-  };
+  const t = dict[lang];
 
   const fadeUp = {
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" as const } }
   };
 
-  const projetos: Projeto[] = [
-    {
-      id: "01",
-      titulo: "WebCars",
-      subtitulo: "Loja de Carros Online com IA",
-      icone: <Cpu className="w-5 h-5 text-[#00b4d8]" />,
-      descricao: "E-commerce de veículos com catálogo, filtros e comparação lado a lado. Inclui assistente de IA em RAG ancorado no catálogo real, captura de leads com pontuação de interesse (frio/morno/quente) e painel administrativo completo.",
-      tecnologias: ["Next.js", "TypeScript", "Node.js", "Express", "PostgreSQL", "pgvector", "Gemini AI"],
-      linkGithub: "https://github.com/lzAmaral/FluxoMind_WebCars",
-      img: "/webcars.png",
-      url: "github.com/lzAmaral/FluxoMind_WebCars"
-    },
-    {
-      id: "02",
-      titulo: "Mercado Tech Brasil",
-      subtitulo: "Analytics do Mercado de TI (CAGED)",
-      icone: <Database className="w-5 h-5 text-[#00b4d8]" />,
-      descricao: "Plataforma analítica que transforma mais de 411 mil registros oficiais do Novo CAGED em insights sobre salários e contratações de TI no Brasil, com pipeline de ETL em Spring Batch e dashboards interativos.",
-      tecnologias: ["Java", "Spring Boot", "Spring Batch", "PostgreSQL", "JavaScript", "Chart.js"],
-      linkGithub: "https://github.com/lzAmaral/caged-etl-analytics",
-      img: "/mercado-tech-brasil.jpeg",
-      url: "github.com/lzAmaral/caged-etl-analytics"
-    }
+  const dockItems = [
+    { icon: <House size={20} />, label: t.nav.inicio, onClick: () => scrollToSection("inicio") },
+    { icon: <BriefcaseBusiness size={20} />, label: t.nav.trajetoria, onClick: () => scrollToSection("trajetoria") },
+    { icon: <FolderOpen size={20} />, label: t.nav.projetos, onClick: () => scrollToSection("projetos") },
+    { icon: <Layers3 size={20} />, label: t.nav.stack, onClick: () => scrollToSection("stack") },
+    { icon: <Mail size={20} />, label: t.nav.contato, onClick: () => scrollToSection("contato") },
   ];
+
+  const renderEntry = (entry: Entry, idx: number) => (
+    <motion.div
+      key={`${entry.org}-${idx}`}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={fadeUp}
+      className={`exp-card-glass p-7 md:p-8 ${entry.destaque ? "border-l-2 border-l-[var(--accent)]" : ""}`}
+    >
+      <div className="flex flex-wrap justify-between items-baseline gap-2 mb-4">
+        <h3 className="serif-display text-2xl text-foreground">{entry.cargo}</h3>
+        <span className="mono text-xs tracking-[0.2em] text-accent">{entry.periodo}</span>
+      </div>
+      <p className="mono text-sm uppercase tracking-widest text-foreground/50 mb-5">{entry.org}</p>
+      <ul className="space-y-3 text-foreground/70 leading-relaxed">
+        {entry.bullets.map((b, i) => (
+          <li key={i} className="flex items-start gap-3">
+            <span className="text-accent mt-1">▹</span>
+            {b}
+          </li>
+        ))}
+      </ul>
+    </motion.div>
+  );
 
   return (
     <div className="site-shell">
@@ -99,102 +391,154 @@ export default function Home() {
           glowRadius={160}
           sparkle={false}
           waveAmplitude={0}
-          gradientFrom="rgba(0, 180, 216, 0.38)"
-          gradientTo="rgba(55, 112, 150, 0.2)"
-          glowColor="#0b4561"
+          gradientFrom="rgba(138, 180, 220, 0.30)"
+          gradientTo="rgba(95, 125, 160, 0.16)"
+          glowColor="#22324a"
         />
       </div>
       <div className="site-content">
+
+      {/* Announcement bar */}
+      <div className="announce-bar serif-display relative z-50">
+        {t.announce}<strong>{t.announceName}</strong>{t.announceRest}
+        <a href="https://github.com/lzAmaral/Trama-AI" target="_blank" rel="noopener noreferrer">{t.announceCta}</a>
+      </div>
+
       {/* Brand header */}
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-4 bg-[#050505]/80 backdrop-blur-md border-b border-white/5' : 'py-8'}`}
+        className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-4 bg-[#10151f]/85 backdrop-blur-md border-b border-white/5' : 'py-6'}`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-          <a href="#inicio" className="font-bold text-xl tracking-tighter hover:text-[#00b4d8] transition-colors">
-            luiz<span className="text-[#00b4d8]">.</span>amaral
+          <a href="#inicio" className="mono font-bold text-lg tracking-tight hover:text-accent transition-colors">
+            luiz<span className="text-accent">.</span>amaral
           </a>
+          <div className="mono text-xs tracking-[0.2em] flex items-center gap-1">
+            <span className="text-foreground/40">[</span>
+            <button
+              onClick={() => setLang("pt")}
+              className={`px-1 transition-colors cursor-pointer ${lang === "pt" ? "text-accent" : "text-foreground/40 hover:text-foreground"}`}
+            >
+              PT
+            </button>
+            <span className="text-foreground/40">/</span>
+            <button
+              onClick={() => setLang("en")}
+              className={`px-1 transition-colors cursor-pointer ${lang === "en" ? "text-accent" : "text-foreground/40 hover:text-foreground"}`}
+            >
+              EN
+            </button>
+            <span className="text-foreground/40">]</span>
+          </div>
         </div>
       </motion.header>
 
       <Dock items={dockItems} panelHeight={68} baseItemSize={50} magnification={70} />
 
       {/* Hero Section */}
-      <section id="inicio" className="relative min-h-screen flex items-center pt-32 pb-20 px-6 md:px-12 overflow-hidden">
-        <div className="max-w-7xl mx-auto w-full z-10">
-          <motion.p 
+      <section id="inicio" className="relative min-h-screen flex items-center pt-24 pb-20 px-6 md:px-12 overflow-hidden">
+        <div className="max-w-5xl mx-auto w-full z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="flex justify-center mb-10"
+          >
+            <div className="pixel-grid">
+              {pixelBlocks.map(([col, row, color], i) => (
+                <span key={i} style={{ gridColumn: col + 1, gridRow: row + 1, background: color }} />
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="mono text-[#00b4d8] mb-8"
+            className="mono text-accent text-sm mb-8"
           >
-            {"// luiz amaral"}
+            {t.heroTag}
           </motion.p>
-          
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.95] max-w-5xl">
-            {["Transformo", "processos", "em"].map((word, i) => (
-              <motion.span key={i} custom={i} variants={wordAnimation} initial="hidden" animate="visible" className="inline-block mr-[0.2em]">
-                {word}
-              </motion.span>
-            ))}
-            <br className="hidden md:block" />
-            {["software", "que", "funciona."].map((word, i) => (
-              <motion.span key={i+3} custom={i+3} variants={wordAnimation} initial="hidden" animate="visible" className="hero-plantin inline-block mr-[0.2em] text-[#00b4d8]">
-                {word}
-              </motion.span>
-            ))}
-          </h1>
-          
-          <motion.p 
+
+          <motion.h1
+            key={`hero-${lang}`}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.9 }}
+            className="serif-display text-4xl md:text-6xl lg:text-7xl leading-[1.1] text-foreground/90"
+          >
+            {t.heroLine1}
+            <br />
+            {t.heroLine2}
+            <span className="text-accent">{t.heroAccent}</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+            className="mono text-xs md:text-sm tracking-[0.3em] text-foreground/50 mt-10"
+          >
+            {t.heroSub}
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.8 }}
+            className="mt-8 text-foreground/60 text-lg max-w-2xl mx-auto font-light leading-relaxed"
+          >
+            {t.heroDesc}
+          </motion.p>
+
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2, duration: 0.8 }}
-            className="mt-12 text-white/60 text-lg md:text-xl max-w-2xl font-light leading-relaxed"
+            className="mt-12 flex flex-wrap justify-center gap-5"
           >
-            Desenvolvedor Fullstack especializado em sistemas agênticos. Construo aplicações que conectam agentes de IA, dados e ferramentas para automatizar processos reais.
-          </motion.p>
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.4, duration: 0.8 }}
-            className="mt-12 flex flex-wrap gap-6"
-          >
-            <a href="#projetos" className="btn-fill">Ver projetos ↓</a>
-            <a href="/Curriculo_Luiz-Amaral.pdf" download className="btn-ghost gap-2">Baixar_CV <Download size={18} /></a>
+            <a href="#projetos" className="btn-bracket btn-bracket--fill">{t.ctaProjetos}</a>
+            <a href="/Curriculo_Luiz-Amaral.pdf" download className="btn-bracket gap-2">{t.ctaCv} <Download size={16} /></a>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.8, duration: 1 }}
-            className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 border-t border-white/10 pt-12"
+            transition={{ delay: 1.6, duration: 1 }}
+            className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 border-t border-white/10 pt-12 text-left"
           >
-            <div>
-              <h3 className="text-4xl md:text-5xl font-black mb-2">2<span className="text-[#00b4d8]">+</span></h3>
-              <p className="mono text-sm text-white/40 uppercase tracking-widest">Anos de estudo</p>
-            </div>
-            <div>
-              <h3 className="text-4xl md:text-5xl font-black mb-2">10<span className="text-[#00b4d8]">+</span></h3>
-              <p className="mono text-sm text-white/40 uppercase tracking-widest">Sistemas Entregues</p>
-            </div>
-            <div>
-              <h3 className="text-4xl md:text-5xl font-black mb-2">10<span className="text-[#00b4d8]">+</span></h3>
-              <p className="mono text-sm text-white/40 uppercase tracking-widest">Tecnologias</p>
-            </div>
-            <div>
-              <h3 className="text-4xl md:text-5xl font-black mb-2 flex items-center"><Terminal className="text-[#00b4d8] w-10 h-10" /></h3>
-              <p className="mono text-sm text-white/40 uppercase tracking-widest">Arquitetura Limpa</p>
-            </div>
+            {t.stats.map(([num, label]) => (
+              <div key={label}>
+                <h3 className="text-4xl md:text-5xl font-black mb-2">{num.replace("+", "")}{num.includes("+") && <span className="text-accent">+</span>}</h3>
+                <p className="mono text-xs text-foreground/40 uppercase tracking-widest">{label}</p>
+              </div>
+            ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Experience Section */}
-      <section id="experiencia" className="py-32 px-6 md:px-12 relative">
-        <div className="max-w-7xl mx-auto">
+      {/* Now Section */}
+      <section id="agora" className="py-24 px-6 md:px-12 section-shade border-t border-white/5">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUp}
+          >
+            <p className="section-label mb-4">{t.nowLabel}</p>
+            <h2 className="serif-display text-3xl md:text-5xl mb-8">{t.nowTitle}</h2>
+            <p className="text-foreground/70 text-lg leading-relaxed mb-6">{t.nowBody1}</p>
+            <p className="text-foreground/70 text-lg leading-relaxed">{t.nowBody2}</p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Trajetória Section */}
+      <section id="trajetoria" className="py-28 px-6 md:px-12 relative">
+        <div className="max-w-5xl mx-auto">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -202,115 +546,50 @@ export default function Home() {
             variants={fadeUp}
             className="mb-16"
           >
-            <p className="mono text-[#00b4d8] mb-4">{"// trajetória"}</p>
-            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">Experiência Profissional</h2>
+            <p className="section-label mb-4">{t.trajLabel}</p>
+            <h2 className="serif-display text-4xl md:text-6xl">{t.trajTitle}</h2>
           </motion.div>
+
+          <p className="mono text-xs tracking-[0.3em] text-foreground/40 mb-6">{t.expTitle}</p>
+          <div className="space-y-6 mb-16">
+            {t.entries.map(renderEntry)}
+          </div>
+
+          <p className="mono text-xs tracking-[0.3em] text-foreground/40 mb-6">{t.eduTitle}</p>
+          <div className="grid md:grid-cols-2 gap-6">
+            {t.edu.map(renderEntry)}
+          </div>
 
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="exp-card-glass p-8 md:p-10 max-w-2xl"
+            className="mt-10 flex flex-wrap items-baseline gap-x-4 gap-y-2 border-t border-white/10 pt-8"
           >
-            <div className="flex justify-between items-start mb-8 border-b border-white/10 pb-6">
-              <div>
-                <span className="mono text-5xl font-black text-white/10">01</span>
-              </div>
-              <span className="mono text-xs text-[#00b4d8] bg-[#00b4d8]/10 px-3 py-1 border border-[#00b4d8]/20">2026 — ATUAL</span>
-            </div>
-            <h3 className="text-2xl font-bold uppercase tracking-wide mb-2">Desenvolvedor Fullstack</h3>
-            <h4 className="text-xl text-white/60 mb-6 font-light">Fluxomind</h4>
-            <ul className="space-y-4 text-white/70">
-              <li className="flex items-start gap-3">
-                <span className="text-[#00b4d8] mt-1">▹</span>
-                Desenvolvimento fullstack de aplicações e fluxos de trabalho baseados em IA.
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#00b4d8] mt-1">▹</span>
-                Construção de sistemas agênticos com LangGraph, incluindo ferramentas, memória, estado e fluxos de decisão.
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#00b4d8] mt-1">▹</span>
-                Implementação de pipelines RAG, embeddings, indexação e recuperação semântica sobre bases de conhecimento.
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#00b4d8] mt-1">▹</span>
-                Desenvolvimento de harnesses para fornecer contexto, validações e mecanismos de controle aos agentes.
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#00b4d8] mt-1">▹</span>
-                Integração de agentes com APIs, bancos de dados, serviços externos e interfaces utilizadas pelos usuários.
-              </li>
-            </ul>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Education Section */}
-      <section id="formacao" className="py-32 px-6 md:px-12 relative section-shade border-t border-white/5">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeUp}
-            className="mb-16"
-          >
-            <p className="mono text-[#00b4d8] mb-4">{"// formação"}</p>
-            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">Formação Acadêmica</h2>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            className="exp-card-glass p-8 md:p-10 max-w-2xl"
-          >
-            <div className="flex justify-between items-start mb-8 border-b border-white/10 pb-6">
-              <div>
-                <span className="mono text-5xl font-black text-white/10">02</span>
-              </div>
-              <span className="mono text-xs text-white/40 border border-white/10 px-3 py-1">2025 — 2027</span>
-            </div>
-            <h3 className="text-2xl font-bold uppercase tracking-wide mb-2">Análise e Desenv. de Sistemas</h3>
-            <h4 className="text-xl text-white/60 mb-6 font-light">FACENS</h4>
-            <ul className="space-y-4 text-white/70">
-              <li className="flex items-start gap-3">
-                <span className="text-white/40 mt-1">▹</span>
-                Formação focada em engenharia de software e modelagem de sistemas.
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-white/40 mt-1">▹</span>
-                Banco de dados, estrutura de dados e arquitetura de aplicações corporativas.
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-white/40 mt-1">▹</span>
-                Práticas de desenvolvimento Ágil.
-              </li>
-            </ul>
+            <span className="mono text-xs tracking-[0.3em] text-accent">{t.langsLabel}</span>
+            <span className="mono text-sm tracking-wider text-foreground/80">{t.langsValue}</span>
           </motion.div>
         </div>
       </section>
 
       {/* Projects Section */}
-      <section id="projetos" className="py-32 px-6 md:px-12 section-shade">
+      <section id="projetos" className="py-28 px-6 md:px-12 section-shade border-t border-white/5">
         <div className="max-w-7xl mx-auto">
-          <motion.div 
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={fadeUp}
-            className="mb-24"
+            className="mb-20"
           >
-            <p className="mono text-[#00b4d8] mb-4">{"// projetos"}</p>
-            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">O que eu construí</h2>
+            <p className="section-label mb-4">{t.projLabel}</p>
+            <h2 className="serif-display text-4xl md:text-6xl">{t.projTitle}</h2>
           </motion.div>
 
-          <div className="space-y-32">
-            {projetos.map((proj, idx) => (
-              <motion.div 
+          <div className="space-y-28">
+            {t.projetos.map((proj, idx) => (
+              <motion.div
                 key={proj.id}
                 initial="hidden"
                 whileInView="visible"
@@ -320,127 +599,94 @@ export default function Home() {
               >
                 <div className={`order-2 ${idx % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
                   <div className="flex items-center gap-4 mb-6">
-                    <span className="mono text-2xl font-black text-[#00b4d8]/40">{proj.id}</span>
+                    <span className="mono text-2xl font-black text-accent/40">{proj.id}</span>
                     <div className="h-[1px] flex-1 bg-white/10" />
-                    {proj.icone}
+                    {proj.status && (
+                      <span className="mono text-[10px] tracking-[0.2em] px-3 py-1 border" style={{ color: proj.dotColor, borderColor: "var(--line)" }}>
+                        {proj.status}
+                      </span>
+                    )}
                   </div>
-                  
-                  <h3 className="mono text-sm text-[#00b4d8] uppercase tracking-widest mb-4">
+
+                  <h3 className="mono text-sm text-accent uppercase tracking-widest mb-3">
                     {proj.subtitulo}
                   </h3>
-                  <h4 className="text-4xl font-bold uppercase tracking-tight mb-8">
+                  <h4 className="serif-display text-4xl md:text-5xl mb-8">
                     {proj.titulo}
                   </h4>
-                  
-                  <p className="text-white/60 text-lg leading-relaxed mb-8">
+
+                  <p className="text-foreground/60 text-lg leading-relaxed mb-8">
                     {proj.descricao}
                   </p>
-                  
+
                   <div className="flex flex-wrap gap-2 mb-10">
                     {proj.tecnologias.map(tech => (
-                      <span key={tech} className="mono text-xs uppercase tracking-wider text-white/80 bg-white/5 border border-white/10 px-3 py-1.5">
+                      <span key={tech} className="mono text-xs uppercase tracking-wider text-foreground/80 bg-white/5 border border-white/10 px-3 py-1.5">
                         {tech}
                       </span>
                     ))}
                   </div>
-                  
-                  <a href={proj.linkGithub} target="_blank" rel="noopener noreferrer" className="btn-ghost inline-flex gap-3">
-                    Analisar Código <Github size={18} />
-                  </a>
+
+                  <div className="flex flex-wrap gap-4">
+                    {proj.linkGithub && (
+                      <a href={proj.linkGithub} target="_blank" rel="noopener noreferrer" className="btn-bracket gap-2">
+                        {t.projCode} <Github size={16} />
+                      </a>
+                    )}
+                    {proj.linkSite && (
+                      <a href={proj.linkSite} target="_blank" rel="noopener noreferrer" className="btn-bracket gap-2">
+                        {t.projSite} <ExternalLink size={16} />
+                      </a>
+                    )}
+                  </div>
                 </div>
 
                 <div className={`order-1 ${idx % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}>
-                  <div className="browser-chrome">
-                    <div className="browser-dots">
-                      <span className="browser-dot browser-dot--red" />
-                      <span className="browser-dot browser-dot--yellow" />
-                      <span className="browser-dot browser-dot--green" />
+                  <div className="term-panel">
+                    <div className="term-titlebar">
+                      <span className="term-dot" style={{ background: proj.dotColor }} />
+                      {proj.termTitle}
                     </div>
-                    <div className="browser-url-bar text-center">
-                      {proj.url || "github.com/lzAmaral"}
+                    <div className="h-[300px] relative overflow-hidden group">
+                      <Image
+                        src={proj.img}
+                        alt={proj.titulo}
+                        fill
+                        className="object-cover object-top opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700"
+                      />
                     </div>
-                  </div>
-                  <div className="bg-[#0a0a0a] border border-t-0 border-[#222] border-b-lg h-[300px] flex items-center justify-center relative overflow-hidden group">
-                    {proj.img ? (
-                      <div className="relative w-full h-full">
-                        <Image 
-                          src={proj.img} 
-                          alt={proj.titulo} 
-                          fill
-                          className="object-cover object-top opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700" 
-                        />
-                      </div>
-                    ) : (
-                      <>
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#00b4d8]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                        <pre className="mono text-[#00b4d8]/30 text-xs w-full overflow-hidden p-10 group-hover:text-[#00b4d8]/60 transition-colors duration-500">
-{`public class ${proj.titulo.replace(/ /g, '')} {
-    @Autowired
-    private SystemEngine engine;
-    
-    public void execute() {
-        // High performance execution
-        engine.runOptimizer(true);
-        engine.scale(100);
-        return success();
-    }
-}`}
-                        </pre>
-                      </>
-                    )}
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
-          
-          <div className="mt-32 text-center">
-            <a href="https://github.com/lzAmaral" target="_blank" rel="noopener noreferrer" className="btn-fill">
-              Ver GitHub Completo →
+
+          <div className="mt-28 text-center">
+            <a href="https://github.com/lzAmaral" target="_blank" rel="noopener noreferrer" className="btn-bracket btn-bracket--fill">
+              {t.projGithubAll}
             </a>
           </div>
         </div>
       </section>
 
-      {/* Skills Section */}
-      <section id="skills" className="py-32 px-6 md:px-12">
+      {/* Stack Section */}
+      <section id="stack" className="py-28 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
-          <motion.div 
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={fadeUp}
             className="mb-16"
           >
-            <p className="mono text-[#00b4d8] mb-4">{"// skills"}</p>
-            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">Stack Técnico</h2>
+            <p className="section-label mb-4">{t.stackLabel}</p>
+            <h2 className="serif-display text-4xl md:text-6xl">{t.stackTitle}</h2>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { 
-                title: "Backend Core", 
-                color: "#00b4d8", 
-                skills: ["Java 17+", "Spring Boot", "Spring Data JPA", "Spring Security", "REST APIs", "Node.js"] 
-              },
-              { 
-                title: "Banco de Dados", 
-                color: "#ff8c42", 
-                skills: ["PostgreSQL", "MySQL", "pgvector", "Modelagem MER", "Flyway"] 
-              },
-              { 
-                title: "IA & Automação", 
-                color: "#a855f7", 
-                skills: ["OpenAI API", "RAG Pipeline", "Embeddings", "Telegram Bot API", "Automação"] 
-              },
-              { 
-                title: "Infra & DevOps", 
-                color: "#27c93f", 
-                skills: ["Docker", "Git", "Clean Architecture", "Solid", "CI/CD Básico"] 
-              }
-            ].map((group, i) => (
-              <motion.div 
-                key={i}
+            {t.stackGroups.map((group, i) => (
+              <motion.div
+                key={group.title}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
@@ -449,12 +695,12 @@ export default function Home() {
                 className="exp-card-glass p-8 group"
               >
                 <div className="flex items-center gap-3 mb-8">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: group.color }} />
-                  <h3 className="font-bold uppercase tracking-widest">{group.title}</h3>
+                  <div className="w-3 h-3 rounded-[2px]" style={{ backgroundColor: group.color }} />
+                  <h3 className="mono font-bold text-sm uppercase tracking-widest">{group.title}</h3>
                 </div>
                 <div className="flex flex-col gap-3">
                   {group.skills.map(skill => (
-                    <span key={skill} className="mono text-sm text-white/60 group-hover:text-white/90 transition-colors">
+                    <span key={skill} className="mono text-sm text-foreground/60 group-hover:text-foreground/90 transition-colors">
                       {skill}
                     </span>
                   ))}
@@ -466,7 +712,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contato" className="py-32 px-6 md:px-12 border-t border-white/5 section-shade">
+      <section id="contato" className="py-28 px-6 md:px-12 border-t border-white/5 section-shade">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial="hidden"
@@ -474,18 +720,26 @@ export default function Home() {
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <p className="mono text-[#00b4d8] mb-6">{"// iniciar_conexao"}</p>
-            <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-8">Bora construir<br/>algo robusto?</h2>
-            <p className="text-xl text-white/60 font-light mb-16 max-w-2xl mx-auto">
-              Sempre aberto a novos desafios em engenharia de software, desenvolvimento de APIs ou integração com IAs.
+            <p className="section-label mb-6">{t.contactLabel}</p>
+            <h2 className="serif-display text-4xl md:text-6xl mb-8">
+              {t.contactTitle1}<span className="text-accent">{t.contactAccent}</span>{t.contactTitle2}
+            </h2>
+            <p className="text-xl text-foreground/60 font-light mb-14 max-w-2xl mx-auto">
+              {t.contactDesc}
             </p>
-            
-            <div className="flex flex-col sm:flex-row justify-center gap-6">
-              <a href="mailto:luizgustavodecamposama@gmail.com" className="btn-fill text-lg">
-                luizgustavodecamposama@gmail.com
+
+            <div className="flex flex-wrap justify-center gap-5">
+              <a href="mailto:luizgustavo092005@gmail.com" className="btn-bracket btn-bracket--fill gap-2">
+                {t.contactEmail} <Mail size={16} />
               </a>
-              <a href="https://www.linkedin.com/in/luiz-gustavo-de-campos-amaral-122622278/" target="_blank" rel="noopener noreferrer" className="btn-ghost text-lg">
-                LinkedIn <ExternalLink size={18} className="ml-2" />
+              <a href="https://www.linkedin.com/in/luiz-amarall/" target="_blank" rel="noopener noreferrer" className="btn-bracket gap-2">
+                {t.contactLinkedin} <ExternalLink size={16} />
+              </a>
+              <a href="https://github.com/lzAmaral" target="_blank" rel="noopener noreferrer" className="btn-bracket gap-2">
+                {t.contactGithub} <Github size={16} />
+              </a>
+              <a href="/Curriculo_Luiz-Amaral.pdf" download className="btn-bracket gap-2">
+                {t.contactCv} <Download size={16} />
               </a>
             </div>
           </motion.div>
@@ -495,12 +749,12 @@ export default function Home() {
       {/* Footer */}
       <footer className="pt-12 pb-32 border-t border-white/5 px-6 md:px-12 text-center md:text-left">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="mono text-xs text-white/40 uppercase tracking-widest">
-            Desenvolvido com foco em performance.
+          <p className="mono text-xs text-foreground/40 uppercase tracking-widest">
+            {t.footerLeft}
           </p>
           <div className="flex items-center gap-2 mono text-xs uppercase tracking-widest">
-            <span className="w-2 h-2 rounded-full bg-[#00b4d8] animate-pulse" />
-            <span className="text-[#00b4d8]">SISTEMA.STATUS: ONLINE</span>
+            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            <span className="text-accent">{t.footerStatus}</span>
           </div>
         </div>
       </footer>

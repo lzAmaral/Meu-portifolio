@@ -20,23 +20,23 @@ const crimsonPro = Crimson_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Luiz Amaral | Desenvolvedor Fullstack e Sistemas Agênticos",
+  title: "Luiz Amaral | AI Engineer & Sistemas Agênticos",
   description:
-    "Desenvolvedor Fullstack especializado em sistemas agênticos, LangGraph, RAG e automação de processos com IA.",
+    "AI Engineer na Fluxomind. Construo sistemas agênticos com LangGraph, pipelines de RAG e integrações via MCP. Software que coloca a IA pra trabalhar em operações reais.",
   openGraph: {
-    title: "Luiz Amaral | Desenvolvedor Fullstack e Sistemas Agênticos",
+    title: "Luiz Amaral | AI Engineer & Sistemas Agênticos",
     description:
-      "Aplicações que conectam agentes de IA, dados e ferramentas para automatizar processos reais.",
-    url: "https://luizamaral.dev",
-    siteName: "Luiz Amaral — Fullstack Developer",
+      "Sistemas agênticos, RAG, MCP e fullstack: da plataforma multi-tenant ao SaaS em produção.",
+    url: "https://luizamaral.vercel.app",
+    siteName: "Luiz Amaral · AI Engineer",
     locale: "pt_BR",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Luiz Amaral | Fullstack e Sistemas Agênticos",
+    title: "Luiz Amaral | AI Engineer & Sistemas Agênticos",
     description:
-      "LangGraph · RAG · Embeddings · Desenvolvimento Fullstack.",
+      "LangGraph · RAG · MCP · Fullstack. Software que coloca a IA pra trabalhar.",
   },
 };
 

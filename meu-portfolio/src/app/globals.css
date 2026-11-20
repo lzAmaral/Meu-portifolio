@@ -1,19 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #050505;
-  --color-foreground: #ffffff;
-  --color-accent: #00b4d8;
-  
+  --color-background: #141a24;
+  --color-foreground: #d9dee8;
+  --color-accent: #8ab4dc;
+  --color-salmon: #e08f80;
+  --color-mustard: #d9a85b;
+  --color-mint: #8ec8a8;
+
   --font-sans: var(--font-space-grotesk), sans-serif;
   --font-mono: var(--font-jetbrains-mono), monospace;
 }
 
 :root {
-  --background: #050505;
-  --foreground: #ffffff;
-  --accent: #00b4d8;
-  --accent-transparent: rgba(0, 180, 216, 0.15);
+  --background: #141a24;
+  --panel: #1a2130;
+  --foreground: #d9dee8;
+  --accent: #8ab4dc;
+  --accent-transparent: rgba(138, 180, 220, 0.15);
+  --salmon: #e08f80;
+  --mustard: #d9a85b;
+  --mint: #8ec8a8;
+  --line: rgba(217, 222, 232, 0.08);
 }
 
 body {
@@ -36,7 +44,7 @@ section[id] {
   background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: #1f1f1f;
+  background: #273043;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -54,45 +62,114 @@ section[id] {
   font-family: var(--font-mono);
 }
 
-/* Buttons */
-.btn-fill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--accent);
-  color: var(--background);
-  font-family: var(--font-mono);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 1rem 2rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  border: 1px solid var(--accent);
+.serif-display {
+  font-family: "Plantin MT Pro", "Plantin Pro", var(--font-crimson-pro), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: -0.02em;
 }
-.btn-fill:hover {
-  background-color: transparent;
+
+.hero-plantin {
+  font-family: "Plantin MT Pro", "Plantin Pro", var(--font-crimson-pro), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: -0.055em;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
   color: var(--accent);
 }
 
-.btn-ghost {
+/* Bracketed buttons — pi.dev style [ LABEL ] */
+.btn-bracket {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   background-color: transparent;
-  color: var(--accent);
+  color: var(--foreground);
   font-family: var(--font-mono);
-  font-weight: 700;
+  font-size: 0.8rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 1rem 2rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.15em;
+  padding: 0.9rem 1.5rem;
+  border: 1px solid var(--line);
+  background: rgba(26, 33, 48, 0.6);
+  transition: all 0.25s ease;
   cursor: pointer;
-  border: 1px solid var(--accent-transparent);
 }
-.btn-ghost:hover {
+.btn-bracket:hover {
   border-color: var(--accent);
-  background-color: var(--accent-transparent);
+  color: var(--accent);
+  background: var(--accent-transparent);
+}
+.btn-bracket--fill {
+  background: var(--accent);
+  color: #10151f;
+  border-color: var(--accent);
+}
+.btn-bracket--fill:hover {
+  background: transparent;
+  color: var(--accent);
+}
+
+/* Announcement bar */
+.announce-bar {
+  background: #0f141d;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+  padding: 0.55rem 1rem;
+  font-size: 0.95rem;
+  color: rgba(217, 222, 232, 0.85);
+}
+.announce-bar a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Terminal panels — pi.dev style */
+.term-panel {
+  background: rgba(15, 20, 29, 0.85);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.term-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(26, 33, 48, 0.8);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(217, 222, 232, 0.55);
+}
+.term-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Pixel monogram blocks */
+.pixel-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 16px);
+  grid-auto-rows: 16px;
+  gap: 2px;
+}
+.pixel-grid span {
+  border-radius: 2px;
 }
 
 /* Site-wide interactive background */
@@ -115,62 +192,19 @@ section[id] {
 }
 
 .section-shade {
-  background-color: rgba(2, 2, 2, 0.5);
+  background-color: rgba(15, 19, 28, 0.5);
 }
 
-.hero-plantin {
-  font-family: "Plantin MT Pro", "Plantin Pro", var(--font-crimson-pro), Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-  text-transform: none;
-  letter-spacing: -0.055em;
-}
-
-/* Browser Mockup CSS */
-.browser-chrome {
-  background: #111;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  padding: 12px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  border: 1px solid #222;
-  border-bottom: none;
-}
-.browser-dots {
-  display: flex;
-  gap: 6px;
-}
-.browser-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-.browser-dot--red { background: #ff5f56; }
-.browser-dot--yellow { background: #ffbd2e; }
-.browser-dot--green { background: #27c93f; }
-
-.browser-url-bar {
-  background: #222;
-  border-radius: 4px;
-  padding: 4px 12px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: #888;
-  flex: 1;
-}
-
-/* Experience Cards */
+/* Experience / glass cards */
 .exp-card-glass {
-  background: rgba(20, 20, 20, 0.4);
+  background: rgba(26, 33, 48, 0.45);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
   transition: all 0.3s ease;
 }
 .exp-card-glass:hover {
   border-color: var(--accent-transparent);
   transform: translateY(-5px);
-  background: rgba(20, 20, 20, 0.6);
+  background: rgba(26, 33, 48, 0.65);
 }
