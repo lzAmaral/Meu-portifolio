@@ -20,6 +20,7 @@ const crimsonPro = Crimson_Pro({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://luizamaral.dev.br"),
   title: "Luiz Amaral | AI Engineer & Sistemas Agênticos",
   description:
     "AI Engineer na Fluxomind. Construo sistemas agênticos com LangGraph, pipelines de RAG e integrações via MCP. Software que coloca a IA pra trabalhar em operações reais.",
@@ -27,13 +28,13 @@ export const metadata: Metadata = {
     title: "Luiz Amaral | AI Engineer & Sistemas Agênticos",
     description:
       "Sistemas agênticos, RAG, MCP e fullstack: da plataforma multi-tenant ao SaaS em produção.",
-    url: "https://luizamaral.vercel.app",
+    url: "https://luizamaral.dev.br",
     siteName: "Luiz Amaral · AI Engineer",
     locale: "pt_BR",
     type: "website",
     images: [
       {
-        url: "https://luizamaral.vercel.app/og.png",
+        url: "https://luizamaral.dev.br/og.png",
         width: 1200,
         height: 630,
         alt: "Luiz Amaral · AI Engineer e Sistemas Agênticos",
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     title: "Luiz Amaral | AI Engineer & Sistemas Agênticos",
     description:
       "LangGraph · RAG · MCP · Fullstack. Software que coloca a IA pra trabalhar.",
-    images: ["https://luizamaral.vercel.app/og.png"],
+    images: ["https://luizamaral.dev.br/og.png"],
   },
 };
 
